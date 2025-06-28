@@ -1,7 +1,8 @@
 #ifndef JEFE_H
 #define JEFE_H
+#include "personaje.h"
 
-class jefe
+class jefe : public personaje
 {
 public:
     jefe();

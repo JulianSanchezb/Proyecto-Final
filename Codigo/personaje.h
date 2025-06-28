@@ -14,6 +14,7 @@ private:
     int posy;
     unsigned short int ancho;
     unsigned short int alto;
+    bool tipoDano;
 
 public:
     personaje();
