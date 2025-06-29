@@ -9,22 +9,24 @@ class personaje : public QGraphicsItem
 {
 private:
     unsigned short int salud;
-    unsigned short int vel;
-    int posx;
-    int posy;
+    int g;
+    int t;
     unsigned short int ancho;
     unsigned short int alto;
-    bool tipoDano;
+    bool onGround;
 
 public:
+    int posx;
+    int posy;
+    int velx;
+    int vely;
     personaje();
     void moveUp();
-    void moveDown();
     void moveRight();
     void moveLeft();
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
-
+    void setPosy(int y);
 };
 
 #endif // PERSONAJE_H

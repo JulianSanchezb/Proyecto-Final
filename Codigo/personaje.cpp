@@ -2,23 +2,18 @@
 
 personaje::personaje() {}
 
-void personaje::moveup() {
-    posy -= vel;
+void personaje::moveUp() {
+    posy -= vely;
     setPos(posx, posy);
 }
 
-void personaje::movedown() {
-    posy += vel;
+void personaje::moveRight() {
+    posx += velx;
     setPos(posx, posy);
 }
 
-void personaje::moveright() {
-    posx += vel;
-    setPos(posx, posy);
-}
-
-void personaje::moveleft() {
-    posx -= vel;
+void personaje::moveLeft() {
+    posx -= velx;
     setPos(posx, posy);
 }
 
@@ -27,6 +22,10 @@ QRectF personaje::boundingRect() const {
 }
 
 void personaje::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
-    painter->setBrush(color); // usar el color actual
+   //painter->setBrush(color); // usar el color actual
     painter->drawEllipse(0, 0, ancho, alto); // dibujo simple del fantasma
+}
+
+void personaje::setPosy(int y){
+    posy -= y;
 }
