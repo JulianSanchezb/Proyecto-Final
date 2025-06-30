@@ -4,8 +4,12 @@
 #include <QGraphicsItem>
 #include <QColor>
 #include <QPainter>
+#include <QObject>
+#include <QGraphicsPixmapItem>
+#include <QTimer>
+class jugador;
 
-class obstaculos: public QGraphicsItem
+class obstaculos: public QGraphicsItem, public QObject
 {
 private:
     int posx;
@@ -15,13 +19,20 @@ private:
     int g;
     int t;
     int ancho, alto;
+    jugador* Goku;
+    QTimer* timer;
+    unsigned short tipo;
 public:
-    obstaculos();
+    obstaculos(int x, int y, int velox, int veloy, int tiempo, int gravedad, int anchoi, int altoi, jugador *Gokui, unsigned short tipo);
+    QRectF boundingRect() const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+
+public slots:
+    void moveeny();
     void moveSenoidal();
     void moveParabolico();
     void moveRecto();
-    QRectF boundingRect() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+
 };
 
 #endif // OBSTACULOS_H

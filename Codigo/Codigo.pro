@@ -13,6 +13,8 @@ SOURCES += \
     jugador.cpp \
     main.cpp \
     mainwindow.cpp \
+    nivel1.cpp \
+    nivel2.cpp \
     obstaculos.cpp \
     personaje.cpp \
     recolectables.cpp
@@ -21,6 +23,8 @@ HEADERS += \
     jefe.h \
     jugador.h \
     mainwindow.h \
+    nivel1.h \
+    nivel2.h \
     obstaculos.h \
     personaje.h \
     recolectables.h
