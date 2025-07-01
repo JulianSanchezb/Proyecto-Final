@@ -10,7 +10,7 @@
 #include <QtMath>
 class jugador;
 
-class obstaculos: public QGraphicsItem, public QObject
+class obstaculos: public QGraphicsPixmapItem, public QObject
 {
 private:
     float posx;
