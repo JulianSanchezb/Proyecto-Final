@@ -7,11 +7,15 @@ class jugador;
 class jefe : public personaje
 {
 private:
-    jugador *goku;
+    jugador* Goku;
+    QPointF pos;
 public:
-    jefe();
+    jefe(unsigned short salu, int gravedad, int tiempo, unsigned short ancho, unsigned short alto,
+         int posix, int posiy, int velox, int veloy, obstaculos *proyectiles);
     void ataqueBasico();
-    void ataqueDoppler();
+    void explosion();
+    bool colision();
+
 };
 
 #endif // JEFE_H

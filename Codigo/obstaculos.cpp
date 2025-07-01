@@ -1,5 +1,6 @@
 #include "obstaculos.h"
 #include "jugador.h"
+
 using namespace std;
 //verificar todas las medidas de la pantalla
 obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo, float gravedad, int anchoi,
@@ -119,13 +120,6 @@ bool obstaculos::colision(){
 QRectF obstaculos::boundingRect() const {
     return QRectF(0, 0, ancho, alto);
 }
-
-void obstaculos::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
-    //painter->setBrush(color); // usar el color actual
-    painter->drawEllipse(0, 0, ancho, alto); // dibujo simple del fantasma
-}
-
-
 
 bool obstaculos::getdisponible(){
     return disponible;
