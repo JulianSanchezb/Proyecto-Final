@@ -56,7 +56,7 @@ void obstaculos::moveSenoidal() {
     t+=0.1;
     setPos(x() + velX, y); // Qt: actualiza posición del objeto en escena
     if(x()> limite || colision()){
-        Goku->salud = ;
+        //Goku->salud = ;
         desactivar();
     }
 }

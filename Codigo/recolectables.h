@@ -5,7 +5,7 @@
 #include <QColor>
 #include <QPainter>
 
-class recolectables: public QGraphicsItem
+class recolectables: public QGraphicsPixmapItem, public QObject
 {
 private:
     int posx;
@@ -16,7 +16,6 @@ private:
 public:
     recolectables();
     QRectF boundingRect() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 };
 
 #endif // RECOLECTABLES_H
