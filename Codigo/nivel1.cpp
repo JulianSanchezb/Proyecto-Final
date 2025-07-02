@@ -6,11 +6,14 @@ nivel1::nivel1() {}
 
 // hay que agregar todo a la escena
 //revisar al final que va a ser camara
-void nivel1::dispararBala() {// puede ser plantilla para pajaros y balas.
-    for (obstaculos* bala : balas) {
-        if (!bala->getdisponible()){
-            QPointF origen = /*camara.pos*/ + QPointF(200, 50);  // punto desde donde sale la bala, modificar 200 y 50
-            bala->activar(origen,30);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
+
+
+void nivel1::mostrar_obstaculo(QVector<obstaculos*> contenedor, int cantidad, int x, int y) {// puede ser plantilla para pajaros y balas.
+    QPointF posicion = QPointF(x,y);
+    for (int i = 0; i < cantidad; ++i) {
+        if (!contenedor[i]->getdisponible()){
+            QPointF origen = camara->pos() + posicion;  // punto desde donde sale la bala, modificar 200 y 50
+            contenedor[i]->activar(origen,30);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
             break;
         }
     }
