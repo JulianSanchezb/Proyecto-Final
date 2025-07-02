@@ -15,6 +15,12 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
     alto = altoi;
     Goku = Gokui;
     disponible = false;
+    limiteinferior = 100;
+    limitesuperior= -100;
+    limiteizquierda= -1000;
+    limitederecha = 1000;
+
+
     switch(tipo){
     case 1: // para la camara
         timer = new QTimer(this);
@@ -56,7 +62,10 @@ void obstaculos::moveSenoidal() {
     t+=0.1;
     setPos(x() + velX, y); // Qt: actualiza posición del objeto en escena
     if(x()> limite || colision()){
-        //Goku->salud = ;
+        if(colision()){
+        short int salud = Goku->getSalud() - 10;
+        Goku->setSalud(salud);
+        }
         desactivar();
     }
 }
@@ -76,7 +85,7 @@ void obstaculos::moveParabolico() {
 
     setPos(x,y);
 
-    if (y < 0 || colision()) {//modificar para que se detenga cuando hay colison o salga de la escena
+    if (x > limiteizquierda ||x>= limiteinferior || colision()) {//modificar para que se detenga cuando hay colison o salga de la escena
         desactivar();
         return;
     }

@@ -17,9 +17,9 @@ public:
     QVector<QPixmap> sprites;
     QList<recolectables*> recursos;
     jugador* Goku;
-    jefe* camara;
+    obstaculos* camara;
     void creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned short int tipo);
-    void dispararBala();
+    void mostrar_obstaculo(QVector<obstaculos *> contenedor, int cantidad, int x, int y);
 
 };
 
