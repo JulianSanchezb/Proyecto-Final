@@ -11,7 +11,7 @@ private:
     QPointF pos;
 public:
     jefe(unsigned short salu, int gravedad, int tiempo, unsigned short ancho, unsigned short alto,
-         int posix, int posiy, int velox, int veloy, obstaculos *proyectiles);
+         int posix, int posiy, int velox, int veloy, jugador *goku);
     void ataqueBasico();
     void explosion();
     bool colision();

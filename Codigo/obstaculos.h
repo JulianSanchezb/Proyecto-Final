@@ -29,7 +29,6 @@ private:
 public:
     obstaculos(float x, float y, float velox, float veloy, float tiempo, float gravedad, int anchoi, int altoi, jugador *Gokui, unsigned short tipo);
     QRectF boundingRect() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void desactivar();
     void activar(QPointF posicion, int tiempo);
     bool colision();
