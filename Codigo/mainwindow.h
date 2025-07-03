@@ -1,7 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include <QGraphicsScene>
 #include <QMainWindow>
+
+class nivel1;
+class nivel2;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,8 +19,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    void cambiarEscena(short int Escena);
 private:
     Ui::MainWindow *ui;
+    QGraphicsScene* escena;
+    nivel1* Nivel1;
+    //nivel2* Nivel2;
 };
 #endif // MAINWINDOW_H

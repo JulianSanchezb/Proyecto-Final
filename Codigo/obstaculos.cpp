@@ -4,7 +4,9 @@
 using namespace std;
 //verificar todas las medidas de la pantalla
 obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo, float gravedad, int anchoi,
-                       int altoi, jugador* Gokui, unsigned short int tipo) {
+                       int altoi, jugador* Gokui, unsigned short int tipo)
+    : QGraphicsPixmapItem(nullptr) // importante: inicializa como QGraphicsPixmapItem
+{
     posx = x;
     posy = y;
     velx = velox;
@@ -16,40 +18,53 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
     Goku = Gokui;
     disponible = false;
     limiteinferior = 100;
-    limitesuperior= -100;
-    limiteizquierda= -1000;
+    limitesuperior = -100;
+    limiteizquierda = -1000;
     limitederecha = 1000;
 
+    // Cargar sprite según el tipo
+    QPixmap img;
 
     switch(tipo){
-    case 1: // para la camara
+    case 1: // cámara
+        img.load("Leche.png");
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveeny);
         timer->start(30);
         break;
-    case 2 ://para los pajaros
+    case 2: // pájaros
+        img.load("C:/Users/Julian/Pictures/Saved Pictures/Sprites/prueba.png");
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveSenoidal);
+        timer->start(30);
         break;
-    case 3:// proyectil giran
+    case 3: // proyectiles que giran
+        img.load(":/sprites/proyectil.png");
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveParabolico);
+        timer->start(30);
         break;
-    case 4:// balas
+    case 4: // balas
+        img.load("C:/Users/Julian/Pictures/Saved Pictures/Sprites/Leche.png");
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveRecto);
-
+        timer->start(30);
+        break;
     }
+
+    setPixmap(img);
+    //setPos(posx, posy);  // coloca el sprite en pantalla
 }
 
 void obstaculos::moveeny(){
-    int limitesuperior = 100;
-    int limiteinferior = -100;
-    int velocidad = 5;
-    if (y() <= limitesuperior || y() >= limiteinferior){
-     velocidad = -velocidad;
+    int limitesuperior = 0;
+    int limiteinferior = 103;
+    //int velocidad = 5;
+    if (y() == limitesuperior || y() == limiteinferior){
+        vely = vely * (-1);
+        qDebug() << y();
     }
-    setY(y() + velocidad);
+    setY(y() + vely);
 }
 
 void obstaculos::moveSenoidal() {

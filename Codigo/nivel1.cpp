@@ -2,7 +2,21 @@
 #include "obstaculos.h"
 #include "jugador.h"
 
-nivel1::nivel1() {}
+nivel1::nivel1(): scene(new QGraphicsScene()),
+    Goku(nullptr),
+    camara(new obstaculos(100,1, 0, 1, 0, 0, 10, 10, Goku, 1))
+
+{
+    creacion(balas,3,4);
+    creacion(pajaros,3,2);
+    QPixmap img("C:/Users/Julian/Pictures/Saved Pictures/Sprites/Nivel 1B.jpg");
+    QGraphicsPixmapItem* fondo = scene->addPixmap(img);
+    fondo->setZValue(-1); // Para que quede al fondo
+    scene->setSceneRect(img.rect());
+    //camara->setScale(0.5);
+    scene->addItem(camara);
+    camara->setPos(100,1);
+}
 
 // hay que agregar todo a la escena
 //revisar al final que va a ser camara
@@ -25,6 +39,15 @@ void nivel1::creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned s
         obj->desactivar();
         contenedor.append(obj);
     }
+}
+
+QGraphicsScene* nivel1::obtenerEscena(){
+    return scene;
+}
+
+//Setters
+void nivel1::setGoku(jugador* goku){
+    Goku = goku;
 }
 
 
