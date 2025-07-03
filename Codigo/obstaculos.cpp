@@ -27,28 +27,35 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
 
     switch(tipo){
     case 1: // cámara
-        img.load("Leche.png");
+        img.load(":/Multimedia/camara.01.png");
+        img = img.scaled(20, 20);
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveeny);
         timer->start(30);
         break;
     case 2: // pájaros
-        img.load("C:/Users/Julian/Pictures/Saved Pictures/Sprites/prueba.png");
+        frames.append(QPixmap(":/Multimedia/pajaro.01.png").scaled(10, 10));
+        frames.append(QPixmap(":/Multimedia/pajaro.02.png").scaled(10, 10));
+        frames.append(QPixmap(":/Multimedia/pajaro.03.png").scaled(10, 10));
+
+        frameCount = frames.size();
+        frameIndex = 0;
+
+        setPixmap(frames[0]);
+
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveSenoidal);
-        timer->start(30);
         break;
     case 3: // proyectiles que giran
         img.load(":/sprites/proyectil.png");
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveParabolico);
-        timer->start(30);
         break;
     case 4: // balas
-        img.load("C:/Users/Julian/Pictures/Saved Pictures/Sprites/Leche.png");
+        img.load(":/Multimedia/bala.png");
+        img = img.scaled(5, 5);
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveRecto);
-        timer->start(30);
         break;
     }
 
@@ -59,23 +66,24 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
 void obstaculos::moveeny(){
     int limitesuperior = 0;
     int limiteinferior = 103;
-    //int velocidad = 5;
     if (y() == limitesuperior || y() == limiteinferior){
         vely = vely * (-1);
-        qDebug() << y();
     }
     setY(y() + vely);
 }
 
 void obstaculos::moveSenoidal() {
     if (!disponible) return;
-    int amplitud = 15;
-    float frecuencia= 0.2;
-    int limite = 30;
-    int velX = 2;
+    int amplitud = 25;
+    float frecuencia= 2;
+    int limite = 300;
+    int velX = 5;
     float y = amplitud * sin(t * frecuencia) + y0;
     t+=0.1;
     setPos(x() + velX, y); // Qt: actualiza posición del objeto en escena
+    frameIndex = (frameIndex + 1) % frameCount;
+    setPixmap(frames[frameIndex]);
+
     if(x()> limite || colision()){
         if(colision()){
         short int salud = Goku->getSalud() - 10;
@@ -107,10 +115,10 @@ void obstaculos::moveParabolico() {
 }
 
 void obstaculos::moveRecto() {
-    int limite = 30;
+    int limite = 300;
     if (!disponible) return;
 
-    int velocidad = 8;
+    int velocidad = 15;
     setPos(x() + velocidad, y());
 
     if (x() > limite || colision()) {
@@ -147,4 +155,8 @@ QRectF obstaculos::boundingRect() const {
 
 bool obstaculos::getdisponible(){
     return disponible;
+}
+
+bool obstaculos::setDisponible(bool tipo){
+    return (disponible = tipo);
 }

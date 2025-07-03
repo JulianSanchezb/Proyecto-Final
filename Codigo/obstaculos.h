@@ -29,6 +29,9 @@ private:
     QTimer* timer;
     unsigned short tipo;
     bool disponible;
+    QVector<QPixmap> frames; // Almacena los distintos sprites
+    int frameIndex;
+    int frameCount;
 public:
     obstaculos(float x, float y, float velox, float veloy, float tiempo, float gravedad, int anchoi, int altoi, jugador *Gokui, unsigned short tipo);
     QRectF boundingRect() const override;
@@ -36,6 +39,7 @@ public:
     void activar(QPointF posicion, int tiempo);
     bool colision();
     bool getdisponible();
+    bool setDisponible(bool tipo);
 public slots:
     void moveeny();
     void moveSenoidal();

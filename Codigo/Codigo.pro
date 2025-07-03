@@ -38,4 +38,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    Multimedia.qrc
+    recursos.qrc
+
+DISTFILES += \
+    ../Multimedia/Game Boy Advance - Dragon Ball Advanced Adventure - Collection.png
