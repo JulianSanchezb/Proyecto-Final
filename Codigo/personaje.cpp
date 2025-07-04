@@ -40,8 +40,6 @@ QRectF personaje::boundingRect() const {
     return QRectF(0, 0, ancho, alto);
 }
 
-
-
 void personaje::setPosy(int y){
     posy -= y;
 }

@@ -2,7 +2,7 @@
 #include "jefe.h"
 #include "obstaculos.h"
 
-jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short int anchoi,unsigned short int altoi, float posix, float posiy, float velox, float veloy) {
+jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short int anchoi,unsigned short int altoi, float posix, float posiy, float velox, float veloy,unsigned short int nivel) {
     setSalud(salu);
     setGravedad(gravedad);
     setTiempo(tiempo);
@@ -17,6 +17,28 @@ jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short in
     saludables = 0;
     energia = 0;
     guilan = nullptr;
+
+    switch(nivel){
+    case 1:
+        frameIndex = 0;
+        animTimer = new QTimer(this);
+
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.1.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.2.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.3.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.4.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.5.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+
+        if (!idleFrames.isEmpty())
+            setPixmap(idleFrames[0]);
+
+        connect(animTimer, &QTimer::timeout, this, &jugador::updateSprite);
+        animTimer->start(200);
+        break;
+    case 2:
+        break;
+    }
 }
 
 void jugador::moveUp2(){
@@ -59,4 +81,10 @@ bool jugador::colision(){
     }else{
         return false;
     }
+}
+
+void jugador::updateSprite() {
+    if (idleFrames.isEmpty()) return;
+    setPixmap(idleFrames[frameIndex]);
+    frameIndex = (frameIndex + 1) % idleFrames.size();
 }

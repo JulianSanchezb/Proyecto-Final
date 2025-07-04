@@ -5,20 +5,16 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-    ,Nivel1(new nivel1())
-    //Nivel2(nullptr)
+    , ui(new Ui::MainWindow),
+    ptrG(new jugador(100, 1.5, 0, 64, 64, 50, 50, 5, 5, 1))
+    ,Nivel1(new nivel1(ptrG))
+//Nivel2(nullptr)
 {
     ui->setupUi(this);
 
-    jugador goku(100, 1.5, 0, 10,10, 50, 50, 20, 20);
-    jugador *ptrG = &goku;
-    Nivel1->setGoku(ptrG);
     connect(ui->pushButton, &QPushButton::clicked, this, [this]() {
         cambiarEscena(1);
     });
-
-
 }
 
 MainWindow::~MainWindow()
@@ -39,4 +35,25 @@ void MainWindow::cambiarEscena(short Escena){
     }
     // Ajustar la vista para escalar automáticamente al nuevo contenido
     ui->graphicsView->fitInView(escena->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent* event) {
+    if (!Nivel1) return;
+    jugador* Goku = Nivel1->Goku;  // Acceso directo al puntero Goku
+    if (!Goku) return;
+
+    switch (event->key()) {
+    case Qt::Key_W:
+        Goku->moveUp2();
+        break;
+    case Qt::Key_S:
+        Goku->moveDown();
+        break;
+    case Qt::Key_A:
+        Goku->moveLeft();
+        break;
+    case Qt::Key_D:
+        Goku->moveRight();
+        break;
+    }
 }

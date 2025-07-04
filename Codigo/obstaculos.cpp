@@ -27,11 +27,23 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
 
     switch(tipo){
     case 1: // cámara
-        img.load(":/Multimedia/camara.01.png");
-        img = img.scaled(20, 20);
+        idleFrames.append(QPixmap(":/Multimedia/camara.01.png").scaled(20, 20));
+        idleFrames.append(QPixmap(":/Multimedia/camara.02.png").scaled(20, 20));
+        idleFrames.append(QPixmap(":/Multimedia/camara.03.png").scaled(20, 20));
+
+        // Animación de disparo
+        shootFrames.append(QPixmap(":/Multimedia/camaraD1.png").scaled(27, 27));
+        shootFrames.append(QPixmap(":/Multimedia/CamaraD2.png").scaled(27, 27));
+
+        frames = idleFrames;
+        frameCount = frames.size();
+        frameIndex = 0;
+
+        setPixmap(frames[0]);
+
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveeny);
-        timer->start(30);
+        timer->start(250);
         break;
     case 2: // pájaros
         frames.append(QPixmap(":/Multimedia/pajaro.01.png").scaled(10, 10));
@@ -52,8 +64,16 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
         connect(timer, &QTimer::timeout, this, &obstaculos::moveParabolico);
         break;
     case 4: // balas
-        img.load(":/Multimedia/bala.png");
-        img = img.scaled(5, 5);
+        frames.append(QPixmap(":/Multimedia/bala1.png").scaled(10, 10));
+        frames.append(QPixmap(":/Multimedia/bala2.png").scaled(10, 10));
+        frames.append(QPixmap(":/Multimedia/bala3.png").scaled(10, 10));
+        frames.append(QPixmap(":/Multimedia/bala4.png").scaled(10, 10));
+
+        frameCount = frames.size();
+        frameIndex = 0;
+
+        setPixmap(frames[0]);
+
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveRecto);
         break;
@@ -66,10 +86,23 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
 void obstaculos::moveeny(){
     int limitesuperior = 0;
     int limiteinferior = 103;
-    if (y() == limitesuperior || y() == limiteinferior){
+    if (y() < limitesuperior || y() > limiteinferior){
         vely = vely * (-1);
     }
     setY(y() + vely);
+
+    if (!frames.isEmpty()) {
+        frameIndex = (frameIndex + 1) % frameCount;
+        setPixmap(frames[frameIndex]);
+    }
+
+    // Si está disparando, volver a idle después de terminar la animación
+    if (disparando && frameIndex == frameCount - 1) {
+        disparando = false;
+        frames = idleFrames;
+        frameCount = frames.size();
+        frameIndex = 0;
+    }
 }
 
 void obstaculos::moveSenoidal() {
@@ -121,8 +154,21 @@ void obstaculos::moveRecto() {
     int velocidad = 15;
     setPos(x() + velocidad, y());
 
+    frameIndex = (frameIndex + 1) % frameCount;
+    setPixmap(frames[frameIndex]);
+
+
     if (x() > limite || colision()) {
         desactivar();
+    }
+}
+
+void obstaculos::animarDisparo() {
+    if (!shootFrames.isEmpty()) {
+        frames = shootFrames;
+        frameCount = frames.size();
+        frameIndex = 0;
+        disparando = true;
     }
 }
 

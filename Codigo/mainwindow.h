@@ -2,9 +2,11 @@
 #define MAINWINDOW_H
 #include <QGraphicsScene>
 #include <QMainWindow>
+#include <QKeyEvent>
 
 class nivel1;
 class nivel2;
+class jugador;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,7 +25,10 @@ public:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* escena;
+    jugador* ptrG;
     nivel1* Nivel1;
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
     //nivel2* Nivel2;
 };
 #endif // MAINWINDOW_H

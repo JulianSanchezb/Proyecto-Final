@@ -17,6 +17,13 @@ private:
     bool onGround;
 
 public:
+    QPixmap img;
+    QTimer* timer;
+    QVector<QPixmap> frames;
+    int frameIndex;
+    int frameCount;
+    QVector<QPixmap> idleFrames;
+    QVector<QPixmap> hitFrames;
     QPointF pos;
     float posx;
     float posy;

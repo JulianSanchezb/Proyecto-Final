@@ -2,10 +2,11 @@
 #include "obstaculos.h"
 #include "jugador.h"
 
-nivel1::nivel1(): scene(new QGraphicsScene()),
-    Goku(nullptr),
-    camara(new obstaculos(100,1, 0, 1, 0, 0, 20, 20, Goku, 1))
-
+nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
+    Goku(goku),
+    camara(new obstaculos(100,1, 0, 5, 0, 0, 25, 25, Goku, 1)),
+    timerM(new QTimer(this)),
+    timerP(new QTimer(this))
 {
     creacion(balas,3,4);
     creacion(pajaros,2,2);
@@ -15,17 +16,18 @@ nivel1::nivel1(): scene(new QGraphicsScene()),
     scene->setSceneRect(img.rect());
 
     crearNube(":/Multimedia/nubes.png",QPointF(1,1),1);
-
+    scene->addItem(Goku);
+    Goku->setPos(100,100);
     scene->addItem(camara);
     camara->setPos(1,1);
-    timerM = new QTimer(this);
-    timerP = new QTimer(this);
+
     connect(timerM, &QTimer::timeout, this, [=]() {
-        mostrar_obstaculo(balas, 3, 1, 2);
+        camara->animarDisparo();
+        mostrar_obstaculo(balas, 3, 18, 18);
     });
     timerM->start(2000);
     connect(timerP, &QTimer::timeout, this, [=]() {
-        mostrar_obstaculo(pajaros, 2, 1, 4);
+        mostrar_obstaculo(pajaros, 2, 1, 30);
     });
     timerP->start(4000);
 }
@@ -80,6 +82,11 @@ void nivel1::crearNube(const QString& rutaImagen, QPointF posicionInicial, float
 
 QGraphicsScene* nivel1::obtenerEscena(){
     return scene;
+}
+
+//Getter
+jugador* nivel1::getGoku(){
+    return Goku;
 }
 
 //Setters
