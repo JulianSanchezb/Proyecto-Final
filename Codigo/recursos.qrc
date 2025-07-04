@@ -3,7 +3,6 @@
     <qresource prefix="/">
         <file>../Multimedia/background-1.png</file>
         <file>../Multimedia/camara.01.png</file>
-        <file>../Multimedia/bala.png</file>
         <file>../Multimedia/pajaro.01.png</file>
         <file>../Multimedia/pajaro.02.png</file>
         <file>../Multimedia/pajaro.03.png</file>
