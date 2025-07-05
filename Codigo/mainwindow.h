@@ -27,6 +27,7 @@ private:
     QGraphicsScene* escena;
     jugador* ptrG;
     nivel1* Nivel1;
+    QTimer* timerS;
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     //nivel2* Nivel2;

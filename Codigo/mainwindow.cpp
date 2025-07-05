@@ -7,16 +7,24 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
     ptrG(new jugador(50, 1.5, 0, 64, 64, 50, 50, 5, 5, 1))
-    ,Nivel1(new nivel1(ptrG))
+    ,Nivel1(new nivel1(ptrG)),
+    timerS(new QTimer(this))
+
 //Nivel2(nullptr)
 {
     ui->setupUi(this);
+
+
 
     connect(ui->pushButton, &QPushButton::clicked, this, [this]() {
         ui->pushButton->setVisible(false);
         ui->progressBar->setMaximum(100);      // Salud máxima
         ui->progressBar->setValue(ptrG->getSalud());
         cambiarEscena(1);
+        timerS->start(400);
+    });
+    connect(timerS, &QTimer::timeout, this, [=]() {
+        ui->progressBar->setValue(ptrG->getSalud());
     });
 }
 

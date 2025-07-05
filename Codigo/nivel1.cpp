@@ -15,11 +15,19 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     fondo->setZValue(-1); // Para que quede al fondo
     scene->setSceneRect(img.rect());
 
+    QPixmap salud(":/Multimedia/salud.png");
+    salud.scaled(15,10);
+    QGraphicsPixmapItem* vida = scene->addPixmap(salud);
+    //vida->scale(0.7);
+    vida->setPos(500,500);
+
     crearNube(":/Multimedia/nubes.png",QPointF(1,1),1);
     scene->addItem(Goku);
     Goku->setPos(100,100);
     scene->addItem(camara);
     camara->setPos(1,1);
+
+
 
     connect(timerM, &QTimer::timeout, this, [=]() {
         camara->animarDisparo();

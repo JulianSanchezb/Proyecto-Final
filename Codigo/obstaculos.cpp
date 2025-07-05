@@ -159,6 +159,10 @@ void obstaculos::moveRecto() {
 
 
     if (x() > limite || colision()) {
+        if(colision()){
+            short int salud = Goku->getSalud() - 10;
+            Goku->setSalud(salud);
+        }
         desactivar();
     }
 }

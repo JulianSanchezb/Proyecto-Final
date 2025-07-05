@@ -40,14 +40,30 @@
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>1060</x>
-      <y>60</y>
-      <width>118</width>
+      <x>1050</x>
+      <y>90</y>
+      <width>121</width>
       <height>23</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QProgressBar {
+    border: 2px solid grey;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #ccc;  /* Color de fondo (opcional) */
+}
+
+QProgressBar::chunk {
+    background-color: red;   /* Color de la barra */
+    width: 10px;
+}</string>
+    </property>
     <property name="value">
      <number>0</number>
+    </property>
+    <property name="textVisible">
+     <bool>false</bool>
     </property>
     <property name="format">
      <string>%p%</string>
