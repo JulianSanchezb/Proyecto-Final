@@ -103,6 +103,12 @@ void obstaculos::moveeny(){
         frameCount = frames.size();
         frameIndex = 0;
     }
+
+    if(colision()){
+        short int salud = Goku->getSalud() - 10;
+        Goku->setSalud(salud);
+    }
+
 }
 
 void obstaculos::moveSenoidal() {
@@ -159,6 +165,10 @@ void obstaculos::moveRecto() {
 
 
     if (x() > limite || colision()) {
+        if(colision()){
+            short int salud = Goku->getSalud() - 10;
+            Goku->setSalud(salud);
+        }
         desactivar();
     }
 }
@@ -195,9 +205,9 @@ bool obstaculos::colision(){
     }
 }
 
-QRectF obstaculos::boundingRect() const {
-    return QRectF(0, 0, ancho, alto);
-}
+//QRectF obstaculos::boundingRect() const {
+//    return QRectF(0, 0, ancho, alto);
+//}
 
 bool obstaculos::getdisponible(){
     return disponible;

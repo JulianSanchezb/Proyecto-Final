@@ -23,13 +23,11 @@ jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short in
         frameIndex = 0;
         animTimer = new QTimer(this);
 
-        idleFrames.append(QPixmap(":/Multimedia/Goku1.1.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        idleFrames.append(QPixmap(":/Multimedia/Goku1.2.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        idleFrames.append(QPixmap(":/Multimedia/Goku1.3.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        idleFrames.append(QPixmap(":/Multimedia/Goku1.4.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        idleFrames.append(QPixmap(":/Multimedia/Goku1.5.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-
-
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.1.png"));
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.2.png"));
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.3.png"));
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.4.png"));
+        idleFrames.append(QPixmap(":/Multimedia/Goku1.5.png"));
         if (!idleFrames.isEmpty())
             setPixmap(idleFrames[0]);
 

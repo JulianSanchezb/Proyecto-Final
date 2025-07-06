@@ -1,6 +1,7 @@
 #include "nivel1.h"
 #include "obstaculos.h"
 #include "jugador.h"
+#include "recolectables.h"
 
 nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     Goku(goku),
@@ -10,16 +11,57 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
 {
     creacion(balas,3,4);
     creacion(pajaros,2,2);
+
+    esfera = new recolectables(50, 50, 1, 1, 10, 10, Goku);
+    scene->addItem(esfera);
+    esfera->setZValue(20);
+    esfera->setParentItem(nullptr);  // Si quieres que sea independiente
+    esfera->setVisible(false);
+    esfera->setScale(0.3);
+
+    leche = new recolectables(100, 20, 1, 2, 10, 10, Goku);
+    leche->setParentItem(nullptr);  // Si quieres que sea independiente
+    scene->addItem(leche);
+    leche->setZValue(20);
+    leche->setVisible(false);
+    leche->setScale(0.3);
+
+
     QPixmap img(":/Multimedia/background-1.png");
     QGraphicsPixmapItem* fondo = scene->addPixmap(img);
     fondo->setZValue(-1); // Para que quede al fondo
     scene->setSceneRect(img.rect());
 
+    //scene->setSceneRect(0, 0, 254, 125);
+
+    QPixmap salud(":/Multimedia/salud.png");
+    QPixmap saludEscalada = salud.scaled(45,30);  // Aquí sí se guarda la imagen escalada
+    QGraphicsPixmapItem* vida = scene->addPixmap(saludEscalada);
+    vida->setPos(210,-5); // Posición exacta en la escena
+    vida->setZValue(10);
+
     crearNube(":/Multimedia/nubes.png",QPointF(1,1),1);
     scene->addItem(Goku);
-    Goku->setPos(100,100);
+    Goku->setPos(215,50);
+    Goku->setScale(0.5);
     scene->addItem(camara);
     camara->setPos(1,1);
+
+
+    QPixmap imgEsfera(":/Multimedia/esfera1.png");
+    QGraphicsPixmapItem* esfera = scene->addPixmap(imgEsfera);
+    esfera->setPos(180, 3);
+    esfera->setScale(0.3);  // si es muy grande
+    esfera->setZValue(20);   // encima del fondo pero debajo de personajes si quieres
+
+    // Leche decorativa
+    QPixmap imgLeche(":/Multimedia/leche.png");
+    QGraphicsPixmapItem* leche = scene->addPixmap(imgLeche);
+    leche->setPos(160, 3);
+    leche->setScale(0.3);
+    leche->setZValue(20);
+
+
 
     connect(timerM, &QTimer::timeout, this, [=]() {
         camara->animarDisparo();
@@ -87,6 +129,14 @@ QGraphicsScene* nivel1::obtenerEscena(){
 //Getter
 jugador* nivel1::getGoku(){
     return Goku;
+}
+
+recolectables* nivel1::getesferas(){
+    return esfera;
+}
+
+recolectables* nivel1::getleche(){
+    return leche;
 }
 
 //Setters
