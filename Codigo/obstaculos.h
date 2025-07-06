@@ -38,7 +38,7 @@ public:
     QVector<QPixmap> shootFrames;
     bool disparando = false;
     void animarDisparo();
-    QRectF boundingRect() const override;
+    //QRectF boundingRect() const override;
     void desactivar();
     void activar(QPointF posicion, int tiempo);
     bool colision();

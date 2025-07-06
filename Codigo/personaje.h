@@ -33,7 +33,7 @@ public:
     void moveUp();
     void moveRight();
     void moveLeft();
-    QRectF boundingRect() const override;
+    //QRectF boundingRect() const override;
     void setPosy(int y);
 
     //Getters

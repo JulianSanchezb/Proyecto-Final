@@ -30,7 +30,10 @@ private:
     QTimer* timerS;
     QGraphicsScene* menu;
     QGraphicsTextItem* t1;
-    nivel1* Nivel1;
+    QGraphicsTextItem* t2;
+    bool limitetiempo = false;
+    nivel1* Nivel1 = nullptr;
+    unsigned short int tiponivel = 0;
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     //nivel2* Nivel2;

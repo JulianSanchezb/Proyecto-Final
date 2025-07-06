@@ -205,9 +205,9 @@ bool obstaculos::colision(){
     }
 }
 
-QRectF obstaculos::boundingRect() const {
-    return QRectF(0, 0, ancho, alto);
-}
+//QRectF obstaculos::boundingRect() const {
+//    return QRectF(0, 0, ancho, alto);
+//}
 
 bool obstaculos::getdisponible(){
     return disponible;

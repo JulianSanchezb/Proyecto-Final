@@ -20,6 +20,7 @@ recolectables::recolectables(int x, int y, unsigned short cantidad, unsigned sho
             QString nombreSprite = QString(":/Multimedia/esfera%1.png").arg(contador);
             setPixmap(QPixmap(nombreSprite));
             setVisible(true);
+            visible=true;
             timer->stop();
             posicion(0);
             connect(timercol, &QTimer::timeout, this, &recolectables::colision);
@@ -27,6 +28,7 @@ recolectables::recolectables(int x, int y, unsigned short cantidad, unsigned sho
             QTimer::singleShot(5000, this, [=]() {
                 timer->start();
                 setVisible(false);
+                visible = false;
             });
             contador = (contador % 7) + 1;
         });
@@ -36,6 +38,7 @@ recolectables::recolectables(int x, int y, unsigned short cantidad, unsigned sho
         setPixmap(QPixmap(":/Multimedia/leche.png"));
         connect(timer, &QTimer::timeout, this, [=]() {
             setVisible(true);
+            visible = true;
             timer->stop();
             posicion(20);
             connect(timercol, &QTimer::timeout, this, &recolectables::colision);
@@ -43,6 +46,7 @@ recolectables::recolectables(int x, int y, unsigned short cantidad, unsigned sho
             QTimer::singleShot(5000, this, [=]() {
                 timer->start();
                 setVisible(false);
+                visible = false;
             });
         });
         timer->start(12000);
@@ -60,7 +64,7 @@ void recolectables::posicion(int x){
         QPointF(150 + x, 95),
         QPointF(200 + x, 50),
         QPointF(210 + x, 69),
-        QPointF(125 + x, 100),
+        QPointF(125 + x, 80),
         QPointF(70 + x, 50)
     };
 
@@ -74,6 +78,7 @@ void recolectables::posicion(int x){
 
 bool recolectables::colision(){
     if(collidesWithItem(prota)){
+        setPos(500,500);
         setVisible(false);
         contcol++;
         return true;
@@ -81,9 +86,9 @@ bool recolectables::colision(){
         return false;
     }
 }
-QRectF recolectables::boundingRect() const {
-    return QRectF(0, 0, ancho, alto);
-}
+//QRectF recolectables::boundingRect() const {
+//    return QRectF(0, 0, ancho, alto);
+//}
 
 unsigned short int recolectables::getAporte(){
     return aporte;
@@ -91,4 +96,8 @@ unsigned short int recolectables::getAporte(){
 
 int recolectables::getcontcol(){
     return contcol;
+}
+
+bool recolectables::getvisibilidad(){
+    return visible;
 }
