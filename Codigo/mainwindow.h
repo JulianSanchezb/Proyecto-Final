@@ -22,12 +22,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void cambiarEscena(short int Escena);
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* escena;
     jugador* ptrG;
-    nivel1* Nivel1;
     QTimer* timerS;
+    QGraphicsScene* menu;
+    QGraphicsTextItem* t1;
+    nivel1* Nivel1;
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     //nivel2* Nivel2;

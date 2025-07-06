@@ -15,9 +15,10 @@ class nivel1 : public QObject
     QVector<obstaculos*> pajaros;
     QTimer* timerM;
     QTimer* timerP;
+    recolectables* esfera;
+    recolectables* leche;
 public:
     nivel1(jugador* goku);
-    //QList<recolectables*> recursos;
     jugador* Goku;
     obstaculos* camara;
     void creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned short int tipo);
@@ -26,7 +27,8 @@ public:
     void crearNube(const QString& rutaImagen, QPointF posicionInicial, float velocidad);
     //getter
     jugador* getGoku();
-
+    recolectables* getleche();
+    recolectables* getesferas();
     //Setters
     void setGoku(jugador* goku);
 };

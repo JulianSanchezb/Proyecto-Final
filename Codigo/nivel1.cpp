@@ -1,6 +1,7 @@
 #include "nivel1.h"
 #include "obstaculos.h"
 #include "jugador.h"
+#include "recolectables.h"
 
 nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     Goku(goku),
@@ -10,20 +11,40 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
 {
     creacion(balas,3,4);
     creacion(pajaros,2,2);
+
+    recolectables* esfera = new recolectables(50, 50, 1, 1, 10, 10, Goku);
+    scene->addItem(esfera);
+    esfera->setZValue(5);
+    esfera->setParentItem(nullptr);  // Si quieres que sea independiente
+    esfera->setVisible(false);
+    esfera->setScale(0.3);
+
+    recolectables* leche = new recolectables(100, 20, 1, 2, 10, 10, Goku);
+    leche->setParentItem(nullptr);  // Si quieres que sea independiente
+    scene->addItem(leche);
+    leche->setZValue(5);
+    leche->setVisible(false);
+    leche->setScale(0.3);
+
+
     QPixmap img(":/Multimedia/background-1.png");
+
     QGraphicsPixmapItem* fondo = scene->addPixmap(img);
     fondo->setZValue(-1); // Para que quede al fondo
     scene->setSceneRect(img.rect());
 
+    //scene->setSceneRect(0, 0, 254, 125);
+
     QPixmap salud(":/Multimedia/salud.png");
-    salud.scaled(15,10);
-    QGraphicsPixmapItem* vida = scene->addPixmap(salud);
-    //vida->scale(0.7);
-    vida->setPos(500,500);
+    QPixmap saludEscalada = salud.scaled(45,30);  // Aquí sí se guarda la imagen escalada
+    QGraphicsPixmapItem* vida = scene->addPixmap(saludEscalada);
+    vida->setPos(210,-5); // Posición exacta en la escena
+    vida->setZValue(10);
 
     crearNube(":/Multimedia/nubes.png",QPointF(1,1),1);
     scene->addItem(Goku);
     Goku->setPos(100,100);
+    Goku->setScale(0.5);
     scene->addItem(camara);
     camara->setPos(1,1);
 
@@ -95,6 +116,14 @@ QGraphicsScene* nivel1::obtenerEscena(){
 //Getter
 jugador* nivel1::getGoku(){
     return Goku;
+}
+
+recolectables* nivel1::getesferas(){
+    return esfera;
+}
+
+recolectables* nivel1::getleche(){
+    return leche;
 }
 
 //Setters

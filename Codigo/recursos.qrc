@@ -21,5 +21,15 @@
         <file>../Multimedia/Goku1.4.png</file>
         <file>../Multimedia/Goku1.5.png</file>
         <file>../Multimedia/salud.png</file>
+        <file>../Multimedia/arena.png</file>
+        <file>../Multimedia/esfera1.png</file>
+        <file>../Multimedia/esfera2.png</file>
+        <file>../Multimedia/esfera3.png</file>
+        <file>../Multimedia/esfera4.png</file>
+        <file>../Multimedia/esfera5.png</file>
+        <file>../Multimedia/esfera6.png</file>
+        <file>../Multimedia/esfera7.png</file>
+        <file>../Multimedia/leche.png</file>
+        <file>../Multimedia/menu.png</file>
     </qresource>
 </RCC>

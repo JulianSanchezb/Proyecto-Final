@@ -103,6 +103,12 @@ void obstaculos::moveeny(){
         frameCount = frames.size();
         frameIndex = 0;
     }
+
+    if(colision()){
+        short int salud = Goku->getSalud() - 10;
+        Goku->setSalud(salud);
+    }
+
 }
 
 void obstaculos::moveSenoidal() {
