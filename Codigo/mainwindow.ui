@@ -72,16 +72,6 @@ QProgressBar::chunk {
      <string>%p%</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
-    <property name="geometry">
-     <rect>
-      <x>960</x>
-      <y>80</y>
-      <width>41</width>
-      <height>51</height>
-     </rect>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow),
     ptrG(new jugador(250, 1.5, 0, 100, 70, 100, 100, 5, 5, 1))
     ,Nivel1(new nivel1(ptrG)),
-    timerS(new QTimer(this))
+    timerS(new QTimer(this)),
+    t1(new QGraphicsTextItem())
 
 
 //Nivel2(nullptr)
@@ -34,27 +35,24 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->graphicsView->setScene(menu);
     //ui->graphicsView->fitInView(menu->sceneRect(), Qt::KeepAspectRatio);
 
-    t1 = escena->addText("");
-    t1->setPos(190,-5);
 
     ui->progressBar->setVisible(false);
     connect(ui->pushButton, &QPushButton::clicked, this, [this]() {
         ui->pushButton->setVisible(false);
-         ui->progressBar->setVisible(true);
+        ui->progressBar->setVisible(true);
         cambiarEscena(1);
         timerS->start(200);
-
         connect(timerS, &QTimer::timeout, this, [=]() {
             ui->progressBar->setValue(ptrG->getSalud());
-            t1->setPlainText(QString::number(Nivel1->getesferas()->getcontcol()));
+            if (Nivel1 && Nivel1->getesferas()) {
+                t1->setPlainText(QString::number(Nivel1->getesferas()->getcontcol()));
+            }
             if(ptrG->getSalud() <= 0){
                 timerS->stop();
                 cambiarEscena(3);
             }
         });
     });
-
-
 }
 
 MainWindow::~MainWindow()
@@ -69,6 +67,9 @@ void MainWindow::cambiarEscena(short Escena){
         escena = Nivel1->obtenerEscena();
         ui->graphicsView->setScene(escena);
         //escena->setSceneRect(30,20,100,50);
+
+        escena->addItem(t1);
+        t1->setPos(175, -5);
 
         break;
     case 2:
