@@ -29,63 +29,132 @@ jefe::jefe(unsigned short int salu, int gravedad, int tiempo, unsigned short int
     Timersecond = new QTimer(this);
     Timerbasic = new QTimer(this);
 
-    idleFrames.append(QPixmap(":/Multimedia/giran1.01.png"));
-    idleFrames.append(QPixmap(":/Multimedia/giran1.02.png"));
-    idleFrames.append(QPixmap(":/Multimedia/giran1.03.png"));
-    idleFrames.append(QPixmap(":/Multimedia/giran1.04.png"));
-    idleFrames.append(QPixmap(":/Multimedia/giran1.05.png"));
-    if (!idleFrames.isEmpty()){
-        setPixmap(idleFrames[0]);
-    }
+    idleFrames.clear();
+    idleFrames.append(QPixmap(":/Multimedia/giran5.01.png").scaled(135,135));
+    idleFrames.append(QPixmap(":/Multimedia/giran5.02.png").scaled(135,135));
+    idleFrames.append(QPixmap(":/Multimedia/giran5.03.png").scaled(135,135));
+    idleFrames.append(QPixmap(":/Multimedia/giran5.04.png").scaled(135,135));
+    idleFrames.append(QPixmap(":/Multimedia/giran5.05.png").scaled(135,135));
 
-    connect(Timerbasic, &QTimer::timeout, this, &jefe::updateSprite);
-    Timerbasic->start(200);
+    for (int i = 1; i <= 5; ++i) {
+        rightFrames.append(QPixmap(QString(":/Multimedia/giran1.0%1.png").arg(i)));
+        leftFrames.append(QPixmap(QString(":/Multimedia/giran1.1%1.png").arg(i)));
+    }
+    currentFrames = &rightFrames;
 
     connect(animTimer, &QTimer::timeout, this, [this]() {
+        if (getSalud() <= 0 && !muerto) {
+            muerto = true;
+            animTimer->stop();
+
+            currentFrames = &idleFrames;
+            frameIndex = 0;
+
+            QTimer* muerteTimer = new QTimer(this);
+            connect(muerteTimer, &QTimer::timeout, this, [=]() mutable {
+                if (frameIndex < currentFrames->size()) {
+                    setPixmap((*currentFrames)[frameIndex]);
+                    frameIndex++;
+                } else {
+                    muerteTimer->stop();
+                    muerteTimer->deleteLater();
+                    deleteLater();
+                }
+            });
+
+            muerteTimer->start(300);
+            return; //evita que el animTimer siga ejecutando lógica normal
+        }
+
+
+        if(getGround()){
+            if(x() >= 390 && x() <= 430){
+                ataqueBasico(0);
+                banderapos = false;
+            }else if(x() <= 1 && x() >= 4){
+                ataqueBasico(1);
+                banderapos = true;
+            }
+
+            if(banderapos){
+                if(colision()){
+                    moveLeft();
+                }
+                moveRight();
+            }else if(!banderapos){
+                if(colision()){
+                    moveRight();
+                }
+                moveLeft();
+
+            }
+            updateSprite();
+        }
+
 
         if(getSalud() <= 50 && !bandera){
             bandera = true;
             if (!Timersecond->isActive()) {
                 connect(Timersecond, &QTimer::timeout, this, [this]() {
                     moveUp();
-                    if(getGround()){
-                        explosion();
-                    }
                 });
-                Timersecond->start(4000);
+                Timersecond->start(10000);
             }
         }
-        if(Goku->x() > x() && Goku->x() < x() + 5){
-            if(!bandera){
+
+
+        if(colision()){
+            contador++;
+            if(banderapos){
+                ataqueBasico(1);
+            }else if(!banderapos){
+                ataqueBasico(0);
+            }
+        }
+        if(!bandera){
+            if(contador == 5){
+                contador = 0;
                 explosion();
             }
-        }else if(Goku->x() > x()+5 && Goku->x() < x() + 15){
-            ataqueBasico();
         }
+
     });
-    animTimer->start(4000);
+    animTimer->start(300);
 
 
 
 }
 
-void jefe::ataqueBasico() {
+void jefe::ataqueBasico(bool posicion) {
+    if (animTimer->isActive()) {
+        animTimer->stop();
+    }
+    if(posicion){
+        hitFrames.clear();
+        hitFrames.append(QPixmap(":/Multimedia/giran2.01.png"));
+        hitFrames.append(QPixmap(":/Multimedia/giran2.02.png"));
+        hitFrames.append(QPixmap(":/Multimedia/giran2.03.png"));
+        hitFrames.append(QPixmap(":/Multimedia/giran2.02.png"));
+        hitFrames.append(QPixmap(":/Multimedia/giran2.03.png"));
 
-    hitFrames.clear();
-    hitFrames.append(QPixmap(":/Multimedia/giran2.01.png"));
-    hitFrames.append(QPixmap(":/Multimedia/giran2.02.png"));
-    hitFrames.append(QPixmap(":/Multimedia/giran2.03.png"));
-    hitFrames.append(QPixmap(":/Multimedia/giran2.02.png"));
-    hitFrames.append(QPixmap(":/Multimedia/giran2.03.png"));
+        frameCount = 0;
+    }else{
+        hitFrames.clear();
+        hitFrames.append(QPixmap(":/Multimedia/giran2.11.png"));
+        hitFrames.append(QPixmap(":/Multimedia/giran2.12.png"));
+        hitFrames.append(QPixmap(":/Multimedia/giran2.13.png"));
+        hitFrames.append(QPixmap(":/Multimedia/giran2.12.png"));
+        hitFrames.append(QPixmap(":/Multimedia/giran2.13.png"));
 
-    frameCount = 0;
-
+        frameCount = 0;
+    }
     QTimer* ataqueTimer = new QTimer(this);
     connect(ataqueTimer, &QTimer::timeout, this, [=]() mutable {
         if (frameCount < hitFrames.size()) {
             setPixmap(hitFrames[frameCount]);
             frameCount++;
         } else {
+
             ataqueTimer->stop();
             ataqueTimer->deleteLater();
 
@@ -93,6 +162,9 @@ void jefe::ataqueBasico() {
             if (colision()) {
                 int saludgoku = Goku->getSalud() - 5;
                 Goku->setSalud(saludgoku);
+            }
+            if (!animTimer->isActive()) {
+                animTimer->start();  // o solo start() si ya configuraste el intervalo
             }
         }
     });
@@ -102,10 +174,16 @@ void jefe::ataqueBasico() {
 
 
 void jefe::explosion() {
+    if (animTimer->isActive()) {
+        animTimer->stop();
+    }
     hitFrames.clear();
-    hitFrames.append(QPixmap(":/Multimedia/giran3.01.png"));
-    hitFrames.append(QPixmap(":/Multimedia/giran3.02.png"));
-    hitFrames.append(QPixmap(":/Multimedia/giran3.03.png"));
+    hitFrames.append(QPixmap(":/Multimedia/giran3.01.png").scaled(135,135));
+    hitFrames.append(QPixmap(":/Multimedia/giran3.02.png").scaled(135,135));
+    hitFrames.append(QPixmap(":/Multimedia/giran3.03.png").scaled(135,135));
+    hitFrames.append(QPixmap(":/Multimedia/giran3.04.png").scaled(135,135));
+    hitFrames.append(QPixmap(":/Multimedia/giran3.05.png").scaled(135,135));
+    hitFrames.append(QPixmap(":/Multimedia/giran3.06.png").scaled(135,135));
 
     frameCount = 0;
 
@@ -114,65 +192,116 @@ void jefe::explosion() {
         if (frameCount < hitFrames.size()) {
             setPixmap(hitFrames[frameCount]);
             frameCount++;
-        } else {
-            explosionTimer->stop();
-            explosionTimer->deleteLater();
-
             // Daño después de la animación
-            float danioMax = 30.0;
+            float danioMax = 250.0;
             float epsilon = 2.0;
 
-            QPointF miPos = this->pos();
-            QPointF objetivoPos = Goku->pos();
 
-            float distancia = QLineF(miPos, objetivoPos).length();
-            int danio = danioMax / pow(distancia + epsilon, 2);
+            float distancia = std::abs(x() - Goku->x());
+            int danio = danioMax / pow( distancia + epsilon, 2);
 
             int saludgoku = Goku->getSalud() - danio;
             Goku->setSalud(saludgoku);
+        } else {
+
+            explosionTimer->stop();
+            explosionTimer->deleteLater();
+
+            if (!animTimer->isActive()) {
+                animTimer->start();  // o solo start() si ya configuraste el intervalo
+            }
         }
+
     });
-    explosionTimer->start(200);  // 200 ms por frame
+    explosionTimer->start(300);  // 200 ms por frame
+
 }
 
-void jefe::moveUp() {  //Verificar el movimiento horizontal cuando está en el aire
-    // Control horizontal
-    velx = 0;
-
-    // Aplicar gravedad
-    vely += getGravedad();
-
-    // Actualizar posición
-    posx += velx;
-    posy += vely;
-
-    // Colisión con el suelo
-    if (posy >= 560) {
-        posy = 560;
-        vely = 0;
-        setGround(true);
-    } else {
-        setGround(false);;
+void jefe::moveUp() {
+    int direccion;
+    if (animTimer->isActive()) {
+        animTimer->stop();
+    }
+    if(banderapos){
+        hitFrames.clear();
+        hitFrames.append(QPixmap(":/Multimedia/giran4.01.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.02.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.03.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.04.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.05.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.06.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.07.png").scaled(135, 135));
+        direccion = 1;
+    }else if(!banderapos){
+        hitFrames.clear();
+        hitFrames.append(QPixmap(":/Multimedia/giran4.11.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.12.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.13.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.14.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.15.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.16.png").scaled(135, 135));
+        hitFrames.append(QPixmap(":/Multimedia/giran4.17.png").scaled(135, 135));
+        direccion  = -1;
     }
 
-    // Actualizar posición visual
-    this->setPos(posx, posy);
+    frameCount = 0;
+    vely = -15;
+
+    QTimer* saltoTimer = new QTimer(this);
+    connect(saltoTimer, &QTimer::timeout, this, [=]() mutable {
+        // Animación de salto
+        if (frameCount < hitFrames.size()) {
+            setPixmap(hitFrames[frameCount]);
+            frameCount++;
+        }
+
+        // Movimiento vertical con gravedad
+        vely += getGravedad();
+        posy += vely;
+
+        // Movimiento horizontal
+        posx += (direccion)*3;
+
+        // Colisión con el suelo
+        if (posy >= 190) {
+            posy = 190;
+            vely = 0;
+            setGround(true);
+            setPos(posx, posy);
+            explosion();  // o lo que se quiera que ocurra al aterrizar
+            if (!animTimer->isActive()) {
+                animTimer->start();  // o solo start() si ya configuraste el intervalo
+            }
+            saltoTimer->stop();
+            saltoTimer->deleteLater();
+            return;
+        } else {
+            setGround(false);
+        }
+
+        setPos(posx, posy);
+    });
+
+    saltoTimer->start(50);  // más frecuente para suavizar
 }
 
+
 void jefe::moveRight() {
+    currentFrames = &rightFrames;
     posx += velx;
     setPos(posx, posy);
 }
 
 void jefe::moveLeft() {
+    currentFrames = &leftFrames;
     posx -= velx;
     setPos(posx, posy);
 }
 
 void jefe::updateSprite() {
-    if (idleFrames.isEmpty()) return;
-    setPixmap(idleFrames[frameIndex]);
-    frameIndex = (frameIndex + 1) % idleFrames.size();
+    if (!currentFrames || currentFrames->isEmpty()) return;
+    setPixmap((*currentFrames)[frameIndex]);
+    frameIndex = (frameIndex + 1) % currentFrames->size();
 }
 
 

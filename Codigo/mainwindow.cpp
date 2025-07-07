@@ -91,6 +91,7 @@ void MainWindow::cambiarEscena(short Escena){
     case 1:
         escena = Nivel1->obtenerEscena();
         ui->graphicsView->setScene(escena);
+       // t1->setPlainText(QString::number(ptrG->get));
 
         escena->addItem(t1);
         t1->setPos(195, 3);

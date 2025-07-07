@@ -11,7 +11,13 @@ private:
     QTimer* animTimer;
     QTimer* Timersecond;
     QTimer* Timerbasic;
+    QVector<QPixmap> rightFrames;
+    QVector<QPixmap> leftFrames;
+    QVector<QPixmap>* currentFrames = nullptr;
     bool bandera = false;
+    bool banderapos = true;
+    bool muerto = false;
+    unsigned short int contador = 0;
     void moveUp();
     void moveRight();
     void moveLeft();
@@ -19,7 +25,7 @@ private:
 public:
     jefe(unsigned short salu, int gravedad, int tiempo, unsigned short ancho, unsigned short alto,
          int posix, int posiy, int velox, int veloy, jugador *goku);
-    void ataqueBasico();
+    void ataqueBasico(bool posicion);
     void explosion();
     bool colision();
     void updateSprite();
