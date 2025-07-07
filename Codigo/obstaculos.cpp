@@ -59,7 +59,16 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
         connect(timer, &QTimer::timeout, this, &obstaculos::moveSenoidal);
         break;
     case 3: // proyectiles que giran
-        img.load(":/sprites/proyectil.png");
+        frames.append(QPixmap(":/Multimedia/proyectil.1.png").scaled(10, 10));
+        frames.append(QPixmap(":/Multimedia/proyectil.2.png").scaled(10, 10));
+        frames.append(QPixmap(":/Multimedia/proyectil.3.png").scaled(10, 10));
+        frames.append(QPixmap(":/Multimedia/proyectil.4.png").scaled(10, 10));
+
+        frameCount = frames.size();
+        frameIndex = 0;
+
+        setPixmap(frames[0]);
+
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveParabolico);
         break;
@@ -143,15 +152,22 @@ void obstaculos::moveParabolico() {
     double vy = v0 * qSin(rad);
 
     double x = posx + vx * t;
-    double y = posy + vy * t - 0.5 * g * t * t;
+    double y0 = posy + vy * t - 0.5 * g * t * t;
 
-    setPos(x,y);
+    setPos(x,y0);
 
-    if (x > limiteizquierda ||x>= limiteinferior || colision()) {//modificar para que se detenga cuando hay colison o salga de la escena
+    frameIndex = (frameIndex + 1) % frameCount;
+    setPixmap(frames[frameIndex]);
+
+    if(y()> 103 || colision()){
+        if(colision()){
+            short int salud = Goku->getSalud() - 10;
+            Goku->setSalud(salud);
+        }
         desactivar();
-        return;
     }
 }
+
 
 void obstaculos::moveRecto() {
     int limite = 300;

@@ -24,7 +24,7 @@ public:
     int frameCount;
     QVector<QPixmap> idleFrames;
     QVector<QPixmap> hitFrames;
-    QPointF pos;
+    //QPointF pos;
     float posx;
     float posy;
     float velx;

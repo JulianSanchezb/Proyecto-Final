@@ -12,7 +12,8 @@ private:
     unsigned short int energia;
     unsigned short int saludables;
 public:
-    jugador(short int salu, float gravedad, float tiempo, unsigned short int anchoi,unsigned short int altoi, float posix, float posiy, float velox, float veloy,unsigned short int nivel);
+    jugador(short int salu, float gravedad, float tiempo, unsigned short int anchoi,unsigned short int altoi,
+            float posix, float posiy, float velox, float veloy,unsigned short int nivel);
     QTimer* animTimer;
     void moveUp2();
     void moveDown();
