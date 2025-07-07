@@ -144,22 +144,22 @@ void obstaculos::moveSenoidal() {
 void obstaculos::moveParabolico() {
     if (!disponible) return;
 
-    t += 0.1; // incremento de tiempo
-    double v0 = 5;
-    double rad = qDegreesToRadians(45.0);
+    t += 0.5; // incremento de tiempo
+
     // Movimiento parabólico
-    double vx = v0 * qCos(rad);
-    double vy = v0 * qSin(rad);
+    double vx = 20;
+    double vy = -10;
 
-    double x = posx + vx * t;
-    double y0 = posy + vy * t - 0.5 * g * t * t;
+    double xr = x0 + vx * t;
+    double yr = y0 + vy * t - 0.5 * g * t * t ;
 
-    setPos(x,y0);
-
+    qDebug()<< t;
+    setPos(xr,yr);
+    qDebug()<< xr << "//" << y();
     frameIndex = (frameIndex + 1) % frameCount;
     setPixmap(frames[frameIndex]);
 
-    if(y()> 103 || colision()){
+    if(y()> 250 || x() >450 || colision()){
         if(colision()){
             short int salud = Goku->getSalud() - 10;
             Goku->setSalud(salud);
@@ -200,17 +200,21 @@ void obstaculos::animarDisparo() {
 
 void obstaculos::activar(QPointF posicion,int tiempo) {
     setPos(posicion);
+
+    qDebug()<<posicion;
+    x0 = posicion.x();
     y0 = posicion.y();
     t = 0;
     disponible = true;
     setVisible(true);
-    if (timer) timer->start(tiempo);
+    if (timer) qDebug()<<"si activa";timer->start(tiempo);
 }
 
 void obstaculos::desactivar() {
     disponible = false;
     setVisible(false);
-    if (timer) timer->stop();
+    if (timer) qDebug()<<"si";timer->stop();
+
 }
 
 bool obstaculos::colision(){

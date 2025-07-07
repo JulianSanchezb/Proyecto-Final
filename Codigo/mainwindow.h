@@ -34,6 +34,7 @@ private:
     QGraphicsTextItem* t2;
     bool limitetiempo = false;
     nivel1* Nivel1 = nullptr;
+    nivel2* Nivel2 = nullptr;
     unsigned short int tiponivel = 0;
 protected:
     void keyPressEvent(QKeyEvent* event) override;

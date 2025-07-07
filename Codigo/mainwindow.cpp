@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "jugador.h"
 #include "nivel1.h"
+#include "nivel2.h"
 #include "recolectables.h"
 #include "menu.h"
 
@@ -36,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         tiponivel = 1;
 
-        QTimer::singleShot(182000, this, [this]() {
+        QTimer::singleShot(1000, this, [this]() {
             limitetiempo = true;
         });
 
@@ -56,15 +57,19 @@ MainWindow::MainWindow(QWidget *parent)
 
             if(ptrG->getSalud() <= 0 || limitetiempo){
                 timerS->stop();
-                if (Nivel1) {
-                    delete Nivel1;
-                    Nivel1 = nullptr;
-                }
                 if(limitetiempo){
                     tiponivel = 2;
                     ptrG->setEnergia(Nivel1->getesferas()->getcontcol());
                     ptrG->setSaludables(Nivel1->getleche()->getcontcol());
+                    if (Nivel1) {
+                        delete Nivel1;
+                        Nivel1 = nullptr;
+                    }
                 }else if(ptrG->getSalud() <= 0){
+                    if (Nivel1) {
+                        delete Nivel1;
+                        Nivel1 = nullptr;
+                    }
                     if (!Menu) {
                         Menu = new menu();
                     }
@@ -98,6 +103,21 @@ void MainWindow::cambiarEscena(short Escena){
         ui->graphicsView->fitInView(escena->sceneRect(), Qt::KeepAspectRatio);
         break;
     case 2:
+        if (!Nivel2){
+            Nivel2 = new nivel2(ptrG);
+        }
+        escena = Nivel2->obtenerEscena();
+        ui->graphicsView->setScene(escena);
+
+        //escena->addItem(t1);
+        //t1->setPos(195, 3);
+
+        //escena->addItem(t2);
+        //t2->setPos(170, 3);
+
+        //t1->setScale(0.5);
+        //t2->setScale(0.5);
+        ui->graphicsView->fitInView(escena->sceneRect(), Qt::KeepAspectRatio);
         break;
     case 0:
         if (Menu) {

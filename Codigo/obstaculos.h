@@ -17,9 +17,10 @@ private:
     float posy;
     float velx;
     float vely;
-    float y0;
+    float y0 ;
+    float x0 ;
     float g;
-    float t;
+    float t ;
     int limiteinferior;
     int limitesuperior;// mirar si definir los limites de la escena en el nivel de manera publica para poder acceder a ellos
     int limiteizquierda;

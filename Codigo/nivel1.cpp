@@ -27,9 +27,12 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     leche->setScale(0.3);
 
 
+
     QPixmap img(":/Multimedia/background-1.png");
-    QGraphicsPixmapItem* fondo = scene->addPixmap(img);
-    fondo->setZValue(-1); // Para que quede al fondo
+    //QGraphicsPixmapItem* fondo = scene->addPixmap(img);
+    //scene->setZValue(-1); // Para que quede al fondo
+    //scene->setSceneRect(img.rect());
+    scene->setBackgroundBrush(img);
     scene->setSceneRect(img.rect());
 
     //scene->setSceneRect(0, 0, 254, 125);
