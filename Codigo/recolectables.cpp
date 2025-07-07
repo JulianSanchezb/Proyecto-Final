@@ -86,6 +86,7 @@ bool recolectables::colision(){
         return false;
     }
 }
+
 //QRectF recolectables::boundingRect() const {
 //    return QRectF(0, 0, ancho, alto);
 //}

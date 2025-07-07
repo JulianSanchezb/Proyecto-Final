@@ -15,7 +15,6 @@ private:
     unsigned short int ancho;
     unsigned short int alto;
     bool onGround;
-
 public:
     QPixmap img;
     QTimer* timer;

@@ -9,8 +9,8 @@ class jugador : public personaje
 {
 private:
     jefe *guilan;
-    unsigned short int energia;
-    unsigned short int saludables;
+    short int energia;
+    short int saludables;
 public:
     jugador(short int salu, float gravedad, float tiempo, unsigned short int anchoi,unsigned short int altoi, float posix, float posiy, float velox, float veloy,unsigned short int nivel);
     QTimer* animTimer;
@@ -21,6 +21,10 @@ public:
     void consumir(unsigned short tipo);
     bool colision();
     void updateSprite();
+
+    //Setters
+    void setEnergia(short int e);
+    void setSaludables(short int s);
 };
 
 #endif // JUGADOR_H

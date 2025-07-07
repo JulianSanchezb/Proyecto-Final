@@ -13,6 +13,7 @@ SOURCES += \
     jugador.cpp \
     main.cpp \
     mainwindow.cpp \
+    menu.cpp \
     nivel1.cpp \
     nivel2.cpp \
     obstaculos.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     jefe.h \
     jugador.h \
     mainwindow.h \
+    menu.h \
     nivel1.h \
     nivel2.h \
     obstaculos.h \
