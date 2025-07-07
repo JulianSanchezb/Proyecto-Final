@@ -86,3 +86,13 @@ void jugador::updateSprite() {
     setPixmap(idleFrames[frameIndex]);
     frameIndex = (frameIndex + 1) % idleFrames.size();
 }
+
+//Setters
+void jugador::setEnergia(short int e){
+    energia = e;
+}
+
+void jugador::setSaludables(short int s){
+    saludables = s;
+}
+

@@ -7,6 +7,7 @@
 class nivel1;
 class nivel2;
 class jugador;
+class menu;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,7 +29,7 @@ private:
     QGraphicsScene* escena;
     jugador* ptrG;
     QTimer* timerS;
-    QGraphicsScene* menu;
+    menu* Menu = nullptr;
     QGraphicsTextItem* t1;
     QGraphicsTextItem* t2;
     bool limitetiempo = false;
