@@ -9,7 +9,7 @@ jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short in
     setAncho(anchoi);
     setAlto(altoi);
     setGround(true);
-    pos = QPointF(posix,posiy);
+    //pos = QPointF(posix,posiy);
     posx = posix;
     posy = posiy;
     velx = velox;
