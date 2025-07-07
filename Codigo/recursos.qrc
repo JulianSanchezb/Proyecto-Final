@@ -30,7 +30,6 @@
         <file>../Multimedia/esfera6.png</file>
         <file>../Multimedia/esfera7.png</file>
         <file>../Multimedia/leche.png</file>
-        <file>../Multimedia/menu.png</file>
         <file>../Multimedia/proyectil.1.png</file>
         <file>../Multimedia/proyectil.2.png</file>
         <file>../Multimedia/proyectil.3.png</file>
@@ -58,5 +57,9 @@
         <file>../Multimedia/giran3.01.png</file>
         <file>../Multimedia/giran3.02.png</file>
         <file>../Multimedia/giran3.03.png</file>
+        <file>../Multimedia/menu.jpg</file>
+        <file>../Multimedia/MaestroRoshi/MaestroRoshi1.png</file>
+        <file>../Multimedia/MaestroRoshi/MaestroRoshi2.png</file>
+        <file>../Multimedia/MaestroRoshi/MaestroRoshi3.png</file>
     </qresource>
 </RCC>
