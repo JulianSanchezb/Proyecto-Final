@@ -15,7 +15,7 @@ public:
     nivel2(jugador *goku);
     jugador* Goku;
     jefe* Giran;
-    void mostrar_obstaculo(QVector<obstaculos *> &contenedor, int cantidad, int x, int y);
+    void mostrar_obstaculo(QVector<obstaculos *> &contenedor, int cantidad, int x, int y, int direccion);
     void creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned short int tipo);
     //getter
     QGraphicsScene* obtenerEscena();

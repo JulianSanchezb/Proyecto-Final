@@ -87,6 +87,9 @@ void jugador::updateSprite() {
     frameIndex = (frameIndex + 1) % idleFrames.size();
 }
 
+
+
+
 //Setters
 void jugador::setEnergia(short int e){
     energia = e;
