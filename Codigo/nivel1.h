@@ -15,10 +15,14 @@ class nivel1 : public QObject
     QVector<obstaculos*> pajaros;
     QTimer* timerM;
     QTimer* timerP;
+    QTimer* timerC;
     recolectables* esfera;
     recolectables* leche;
+    QGraphicsTextItem* t1;
+    QGraphicsTextItem* t2;
 public:
     nivel1(jugador* goku);
+    ~nivel1();
     jugador* Goku;
     obstaculos* camara;
     void creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned short int tipo);

@@ -7,8 +7,10 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     Goku(goku),
     camara(new obstaculos(100,1, 0, 5, 0, 0, 25, 25, Goku, 1)),
     timerM(new QTimer(this)),
-    timerP(new QTimer(this))
+    timerP(new QTimer(this)),
+    timerC(new QTimer(this))
 {
+
     creacion(balas,3,4);
     creacion(pajaros,2,2);
 
@@ -26,16 +28,20 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     leche->setVisible(false);
     leche->setScale(0.3);
 
+    t1 = new QGraphicsTextItem;
+    scene->addItem(t1);
+    t1->setPos(195, 3);
 
+    t2 = new QGraphicsTextItem;
+    scene->addItem(t2);
+    t2->setPos(170, 3);
+
+    t1->setScale(0.5);
+    t2->setScale(0.5);
 
     QPixmap img(":/Multimedia/background-1.png");
-    //QGraphicsPixmapItem* fondo = scene->addPixmap(img);
-    //scene->setZValue(-1); // Para que quede al fondo
-    //scene->setSceneRect(img.rect());
     scene->setBackgroundBrush(img);
     scene->setSceneRect(img.rect());
-
-    //scene->setSceneRect(0, 0, 254, 125);
 
     QPixmap salud(":/Multimedia/salud.png");
     QPixmap saludEscalada = salud.scaled(45,30);  // Aquí sí se guarda la imagen escalada
@@ -50,12 +56,11 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     scene->addItem(camara);
     camara->setPos(1,1);
 
-
     QPixmap imgEsfera(":/Multimedia/esfera1.png");
     QGraphicsPixmapItem* esfera = scene->addPixmap(imgEsfera);
     esfera->setPos(180, 3);
-    esfera->setScale(0.3);  // si es muy grande
-    esfera->setZValue(20);   // encima del fondo pero debajo de personajes si quieres
+    esfera->setScale(0.3);
+    esfera->setZValue(20);
 
     // Leche decorativa
     QPixmap imgLeche(":/Multimedia/leche.png");
@@ -64,22 +69,63 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     leche->setScale(0.3);
     leche->setZValue(20);
 
-
-
     connect(timerM, &QTimer::timeout, this, [=]() {
         camara->animarDisparo();
         mostrar_obstaculo(balas, 3, 18, 18);
     });
+
     timerM->start(2000);
+
     connect(timerP, &QTimer::timeout, this, [=]() {
         mostrar_obstaculo(pajaros, 2, 1, 30);
     });
+
     timerP->start(4000);
+
+    connect(timerC, &QTimer::timeout, this, [=]() {
+        if (getesferas()->getvisibilidad()) {
+            t1->setPlainText(QString::number(getesferas()->getcontcol()));
+        }
+        if (getleche()->getvisibilidad()) {
+            t2->setPlainText(QString::number(getleche()->getcontcol()));
+        }
+    });
+
+    timerC->start(1400);
 }
 
-// hay que agregar todo a la escena
-//revisar al final que va a ser camara
+nivel1::~nivel1() {
+    if (timerM) timerM->stop();
+    if (timerP) timerP->stop();
+    if (timerC) timerC->stop();
 
+    for (auto* const& b : balas) {
+        delete b;
+    }
+    balas.clear();
+
+    for (auto* const& p : pajaros) {
+        delete p;
+    }
+    pajaros.clear();
+
+    delete esfera;
+    esfera = nullptr;
+
+    delete leche;
+    leche = nullptr;
+
+    delete camara;
+    camara = nullptr;
+
+    if (scene) {
+        scene->clear();  // Elimina los items de la escena
+        delete scene;
+        scene = nullptr;
+    }
+
+    //Goku = nullptr;
+}
 
 void nivel1::mostrar_obstaculo(QVector<obstaculos*> contenedor, int cantidad, int x, int y) {// puede ser plantilla para pajaros y balas.
     QPointF posicion = QPointF(x,y);

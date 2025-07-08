@@ -17,6 +17,7 @@ jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short in
     saludables = 0;
     energia = 0;
     guilan = nullptr;
+    estado = 0;
 
     switch(nivel){
     case 1:
@@ -28,10 +29,24 @@ jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short in
         idleFrames.append(QPixmap(":/Multimedia/Goku1.3.png"));
         idleFrames.append(QPixmap(":/Multimedia/Goku1.4.png"));
         idleFrames.append(QPixmap(":/Multimedia/Goku1.5.png"));
-        if (!idleFrames.isEmpty())
+        if (!idleFrames.isEmpty()){
             setPixmap(idleFrames[0]);
+        }
 
-        connect(animTimer, &QTimer::timeout, this, &jugador::updateSprite);
+        hitFrames.append(QPixmap(":/Multimedia/Goku1/Gokul1.png"));
+        hitFrames.append(QPixmap(":/Multimedia/Goku1/Gokul2.png"));
+
+        spritesMuerte.append(QPixmap(":/Multimedia/Goku1/Gokul1.png"));
+        spritesMuerte.append(QPixmap(":/Multimedia/Goku1/Gokul2.png"));
+        spritesMuerte.append(QPixmap(":/Multimedia/Goku1/Gokul3.png"));
+        spritesMuerte.append(QPixmap(":/Multimedia/Goku1/Gokul4.png"));
+
+        connect(animTimer, &QTimer::timeout, this, [=]() {
+            if(getSalud() <= 0){
+                estado = 2;
+            }
+            actualizarSprite();
+        });
         animTimer->start(200);
         break;
     case 2:
@@ -81,10 +96,37 @@ bool jugador::colision(){
     }
 }
 
-void jugador::updateSprite() {
-    if (idleFrames.isEmpty()) return;
-    setPixmap(idleFrames[frameIndex]);
-    frameIndex = (frameIndex + 1) % idleFrames.size();
+void jugador::actualizarSprite() {
+    switch (estado) {
+    case 0: // Normal
+        setPixmap(idleFrames[frameIndex % idleFrames.size()]);
+        if(frameIndex >=idleFrames.size()){
+            frameIndex = 0;
+        }
+        break;
+    case 1: // Daño
+        setPixmap(hitFrames[frameIndex % hitFrames.size()]);
+        if(frameIndex >= hitFrames.size()){
+            frameIndex = 0;
+            estado = 0;
+        }
+        break;
+    case 2: // Muerte
+        if(frameIndex < spritesMuerte.size()){
+            setPixmap(spritesMuerte[frameIndex % spritesMuerte.size()]);
+        }
+        if(frameIndex >= spritesMuerte.size()){
+            animTimer->stop();
+        }
+        break;
+    }
+    frameIndex++;
+}
+
+void jugador::recibirDano(){
+    if(hitFrames.isEmpty()) return;
+    setPixmap(hitFrames[frameIndex]);
+    frameIndex = (frameIndex + 1) % hitFrames.size();
 }
 
 
@@ -99,3 +141,10 @@ void jugador::setSaludables(short int s){
     saludables = s;
 }
 
+void jugador::setEstado(short int e){
+    estado = e;
+}
+
+void jugador::resetAnimtimer(){
+    animTimer->start(200);
+}

@@ -5,7 +5,7 @@ using namespace std;
 //verificar todas las medidas de la pantalla
 obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo, float gravedad, int anchoi,
                        int altoi, jugador* Gokui, unsigned short int tipo)
-    : QGraphicsPixmapItem(nullptr) // importante: inicializa como QGraphicsPixmapItem
+    : QGraphicsPixmapItem(nullptr)
 {
     posx = x;
     posy = y;
@@ -22,7 +22,7 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
     limiteizquierda = -1000;
     limitederecha = 1000;
 
-    // Cargar sprite según el tipo
+    timer = new QTimer(this);
     QPixmap img;
 
     switch(tipo){
@@ -41,7 +41,6 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
 
         setPixmap(frames[0]);
 
-        timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveeny);
         timer->start(250);
         break;
@@ -55,7 +54,6 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
 
         setPixmap(frames[0]);
 
-        timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveSenoidal);
         break;
     case 3: // proyectiles que giran
@@ -69,7 +67,6 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
 
         setPixmap(frames[0]);
 
-        timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveParabolico);
         break;
     case 4: // balas
@@ -83,13 +80,20 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
 
         setPixmap(frames[0]);
 
-        timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &obstaculos::moveRecto);
         break;
     }
-
     setPixmap(img);
-    //setPos(posx, posy);  // coloca el sprite en pantalla
+}
+
+obstaculos::~obstaculos() {
+    if (timer) {
+        timer->stop();
+    }
+
+    frames.clear();
+    idleFrames.clear();
+    shootFrames.clear();
 }
 
 void obstaculos::moveeny(){
@@ -200,24 +204,36 @@ void obstaculos::animarDisparo() {
 void obstaculos::activar(QPointF posicion,int tiempo) {
     setPos(posicion);
 
-    qDebug()<<posicion;
+    //qDebug()<<posicion;
     x0 = posicion.x();
     y0 = posicion.y();
     t = 0;
     disponible = true;
     setVisible(true);
-    if (timer) ;timer->start(tiempo);
+
+    //if (timer) qDebug()<<"si activa";
+    timer->start(tiempo);
+
+    //if (timer) ;timer->start(tiempo); Esto estaba, no sé si sirva para algo
+
 }
 
 void obstaculos::desactivar() {
     disponible = false;
     setVisible(false);
-    if (timer) ;timer->stop();
+
+    //if (timer) qDebug()<<"si";timer->stop();
+
+    //if (timer) ;timer->stop();
 
 }
 
 bool obstaculos::colision(){
     if(collidesWithItem(Goku)){
+        if(Goku->getSalud() > 0){
+            Goku->setEstado(1);
+            frameIndex = 0;
+        }
         return true;
     }else{
         return false;
