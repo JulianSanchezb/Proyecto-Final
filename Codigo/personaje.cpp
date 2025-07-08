@@ -26,12 +26,12 @@ void personaje::moveUp() {  //Verificar el movimiento horizontal cuando está en
     this->setPos(posx, posy);
 }
 
-void personaje::moveRight() {
+void personaje::moveRightp() {
     posx += velx;
     setPos(posx, posy);
 }
 
-void personaje::moveLeft() {
+void personaje::moveLeftp() {
     posx -= velx;
     setPos(posx, posy);
 }

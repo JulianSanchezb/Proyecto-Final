@@ -201,6 +201,11 @@ void jefe::explosion() {
             int danio = danioMax / pow( distancia + epsilon, 2);
 
             int saludgoku = Goku->getSalud() - danio;
+
+            if(Goku->getSalud() > 0 && danio > 5){
+                Goku->setEstado(1);
+                frameIndex = 0;
+            }
             Goku->setSalud(saludgoku);
         } else {
 
@@ -308,6 +313,10 @@ void jefe::updateSprite() {
 
 bool jefe::colision(){
     if(collidesWithItem(Goku)){
+        if(Goku->getSalud() > 0){
+            Goku->setEstado(1);
+            frameIndex = 0;
+        }
         return true;
     }else{
         return false;

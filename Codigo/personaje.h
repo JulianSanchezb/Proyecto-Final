@@ -30,8 +30,8 @@ public:
     float vely;
     personaje();
     void moveUp();
-    void moveRight();
-    void moveLeft();
+    void moveRightp();
+    void moveLeftp();
     //QRectF boundingRect() const override;
     void setPosy(int y);
 
