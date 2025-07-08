@@ -40,6 +40,6 @@ private:
     bool replay;
 protected:
     void keyPressEvent(QKeyEvent* event) override;
-    //nivel2* Nivel2;
+    void keyReleaseEvent(QKeyEvent *event) override;
 };
 #endif // MAINWINDOW_H

@@ -42,6 +42,7 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     Giran->setPos(4,180);
     Giran->setScale(0.5);
 
+    qDebug()<<Goku->pos();
     connect(timerP, &QTimer::timeout, this, [=]() {
         if(Giran->x() >= 390 && Giran->x() <= 430){
             mostrar_obstaculo(proyectiles, 3, 50, 20,-1);
