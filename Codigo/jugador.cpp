@@ -192,24 +192,6 @@ void jugador::setnivel(unsigned short int nive) {
     posx = x();
     posy = y();
 
-    if (!animTimer) {
-        animTimer = new QTimer(this);
-        connect(animTimer, &QTimer::timeout, this, [=]() {
-            if (getSalud() <= 0) estado = 2;
-            actualizarSprite();
-            if (direccionMovimiento != 0) {
-                posx += direccionMovimiento * velx;
-                setPos(posx, posy);
-
-                if (!moveFrames.isEmpty()) {
-                    setPixmap(moveFrames[frameCount % moveFrames.size()]);
-                    frameCount++;
-                }
-            }
-        });
-        animTimer->start(100);
-    }
-
     switch (nivel) {
     case 1:
         idleFrames.append(QPixmap(":/Multimedia/Goku1.1.png"));
@@ -244,4 +226,23 @@ void jugador::setnivel(unsigned short int nive) {
         spritesMuerte.append(QPixmap(":/Multimedia/Goku1/Gokul4.png"));
         break;
     }
+
+    if (!animTimer) {
+        animTimer = new QTimer(this);
+        connect(animTimer, &QTimer::timeout, this, [=]() {
+            if (getSalud() <= 0) estado = 2;
+            actualizarSprite();
+            if (direccionMovimiento != 0) {
+                posx += direccionMovimiento * velx;
+                setPos(posx, posy);
+
+                if (!moveFrames.isEmpty()) {
+                    setPixmap(moveFrames[frameCount % moveFrames.size()]);
+                    frameCount++;
+                }
+            }
+        });
+        animTimer->start(100);
+    }
+
 }

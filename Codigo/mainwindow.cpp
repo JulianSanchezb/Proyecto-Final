@@ -14,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     timerN(new QTimer(this)),
     tiponivel(0),
     replay(true)
-
-//Nivel2(nullptr)
 {
     ui->setupUi(this);
     this->setFocusPolicy(Qt::StrongFocus);  // El MainWindow escucha teclas
@@ -36,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
         tiponivel = 1;
 
         ui->progressBar->setVisible(true);
-        timerN->start(1000);
+        timerN->start(60000);
         timerS->start(200);
         cambiarEscena(tiponivel);
     });
@@ -70,13 +68,13 @@ MainWindow::MainWindow(QWidget *parent)
                     replay = true;
                     tiponivel = 0;
                     ptrG->setPos(215,50);
+                    if (ptrG->scene()){
+                        ptrG->scene()->removeItem(ptrG);
+                    }
                 }
-                if (timerS->isActive()) {
+                if (timerS->isActive()){
                     timerS->stop();
                 }
-                //if (ptrG->scene()) {
-                //    ptrG->scene()->removeItem(ptrG);
-                //}
                 if (Nivel1) {
                     delete Nivel1;
                     Nivel1 = nullptr;
