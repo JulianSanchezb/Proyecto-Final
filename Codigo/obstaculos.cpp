@@ -151,15 +151,14 @@ void obstaculos::moveParabolico() {
     t += 0.5; // incremento de tiempo
 
     // Movimiento parabólico
-    double vx = 20;
+    double vx = (direccion)*20;
     double vy = -10;
 
     double xr = x0 + vx * t;
     double yr = y0 + vy * t - 0.5 * g * t * t ;
 
-    //qDebug()<< t;
     setPos(xr,yr);
-    //qDebug()<< xr << "//" << y();
+
     frameIndex = (frameIndex + 1) % frameCount;
     setPixmap(frames[frameIndex]);
 
@@ -211,14 +210,21 @@ void obstaculos::activar(QPointF posicion,int tiempo) {
     t = 0;
     disponible = true;
     setVisible(true);
+
     //if (timer) qDebug()<<"si activa";
     timer->start(tiempo);
+
+    //if (timer) ;timer->start(tiempo); Esto estaba, no sé si sirva para algo
+
 }
 
 void obstaculos::desactivar() {
     disponible = false;
     setVisible(false);
+
     //if (timer) qDebug()<<"si";timer->stop();
+
+    //if (timer) ;timer->stop();
 
 }
 

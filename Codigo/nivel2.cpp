@@ -5,7 +5,7 @@
 
 nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     Goku(goku),
-    Giran(new jefe(250, 1.5, 0, 100, 70, 4, 160, 5, 5, Goku)),
+    Giran(new jefe(250, 1.5, 0, 100, 70, 4, 180, 5, 5, Goku)),
     timerP(new QTimer(this))
 {
     creacion(proyectiles,3,3);
@@ -35,28 +35,33 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     leche->setZValue(20);
 
     scene->addItem(Goku);
-    Goku->setPos(400,200);
+    Goku->setPos(370,200);
     Goku->setScale(0.5);
 
     scene->addItem(Giran);
-    Giran->setPos(4,160);
-    Giran->setScale(0.7);
+    Giran->setPos(4,180);
+    Giran->setScale(0.5);
 
     connect(timerP, &QTimer::timeout, this, [=]() {
-        mostrar_obstaculo(proyectiles, 3, 50, 20);
+        if(Giran->x() >= 390 && Giran->x() <= 430){
+            mostrar_obstaculo(proyectiles, 3, 50, 20,-1);
+        }else if(Giran->x()<=10 && Giran->x() >= 1){
+            mostrar_obstaculo(proyectiles, 3, 50, 20,1);
+        }
     });
-    timerP->start(15000);
+    timerP->start(500);
 
 
 
 }
 
-void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad, int x, int y) {// puede ser plantilla para pajaros y balas.
+void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad, int x, int y, int direccion) {// puede ser plantilla para pajaros y balas.
     QPointF posicion = QPointF(x,y);
     for (int i = 0; i < cantidad; ++i) {
         if (!contenedor[i]->getdisponible()){
             QPointF origen = Giran->pos()  + posicion;  // punto desde donde sale la bala, modificar 200 y 50
-            contenedor[i]->activar(origen,200);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
+            contenedor[i]->activar(origen,100);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
+            contenedor[i]->direccion = direccion;
             break;
         }
     }
@@ -65,7 +70,6 @@ void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad, 
 
 void nivel2::creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned short int tipo) {
     for (int i = 0; i < cantidad; ++i) {
-        qDebug()<<cantidad;
         obstaculos* obj = new obstaculos(0, 0, 0, 0, 0, -1.5, 15, 15, Goku, tipo);
         contenedor.append(obj);
         scene->addItem(obj);

@@ -129,6 +129,9 @@ void jugador::recibirDano(){
     frameIndex = (frameIndex + 1) % hitFrames.size();
 }
 
+
+
+
 //Setters
 void jugador::setEnergia(short int e){
     energia = e;

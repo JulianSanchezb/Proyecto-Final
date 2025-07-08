@@ -94,7 +94,6 @@ void MainWindow::cambiarEscena(short Escena){
     case 1:
         if(Nivel1){
         escena = Nivel1->obtenerEscena();
-
         ui->graphicsView->setScene(escena);
         }
         ui->graphicsView->fitInView(escena->sceneRect(), Qt::KeepAspectRatio);
