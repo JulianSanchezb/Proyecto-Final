@@ -21,8 +21,11 @@ private:
     short int frameActual;
 public:
     menu();
+    ~menu();
     QGraphicsScene* obtenerEscena();
     QPushButton* getBoton();
+    //Setters
+    void setTimer(bool des);
 };
 
 #endif // MENU_H

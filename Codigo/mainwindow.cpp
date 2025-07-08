@@ -11,9 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow),
     ptrG(new jugador(250, 1.5, 0, 100, 70, 215, 50, 5, 5, 1)),
     timerS(new QTimer(this)),
-    t1(new QGraphicsTextItem()),
-    t2(new QGraphicsTextItem()),
-    tiponivel(0)
+    timerN(new QTimer(this)),
+    tiponivel(0),
+    replay(true)
 
 //Nivel2(nullptr)
 {
@@ -22,62 +22,65 @@ MainWindow::MainWindow(QWidget *parent)
     Menu = new menu();
 
     QTimer::singleShot(0, this, [this]() {
-        cambiarEscena(0);  // Aquí sí funciona bien el fitInView
+        cambiarEscena(0);
     });
 
     connect(Menu->getBoton(), &QPushButton::clicked, this, [this]() {
+
         if (!Nivel1){
             Nivel1 = new nivel1(ptrG);
-        }
-
-        if (Menu) {     //Libera la memoria reservada para la escena del menú
-            delete Menu;
-            Menu = nullptr;
+            //qDebug()<<"Entro";
         }
 
         tiponivel = 1;
 
-        QTimer::singleShot(1000, this, [this]() {
-            limitetiempo = true;
-        });
-
         ui->progressBar->setVisible(true);
-        cambiarEscena(tiponivel);
+        timerN->start(150000);
         timerS->start(200);
-        connect(timerS, &QTimer::timeout, this, [=]() {
-            ui->progressBar->setValue(ptrG->getSalud());
-            if (Nivel1 && Nivel1->getesferas()) {
-                if(Nivel1->getesferas()->getvisibilidad()){
-                    t1->setPlainText(QString::number(Nivel1->getesferas()->getcontcol()));
-                }
-                if(Nivel1->getleche()->getvisibilidad()){
-                    t2->setPlainText(QString::number(Nivel1->getleche()->getcontcol()));
-                }
-            }
+        cambiarEscena(tiponivel);
+    });
 
-            if(ptrG->getSalud() <= 0 || limitetiempo){
-                timerS->stop();
+    connect(timerN, &QTimer::timeout, this, [this]() {
+        limitetiempo = true;
+    });
+
+    connect(timerS, &QTimer::timeout, this, [this]() {
+        if(replay){
+            ptrG->setSalud(250);
+            ptrG->setEstado(0);
+            ptrG->resetAnimtimer();
+            replay = false;
+        }
+        ui->progressBar->setValue(ptrG->getSalud());
+
+        if(ptrG->getSalud() <= 0 || limitetiempo){
+            timerN->stop();
+            QTimer::singleShot(3000, this, [this]() {
                 if(limitetiempo){
                     tiponivel = 2;
+                    if(Nivel1){
                     ptrG->setEnergia(Nivel1->getesferas()->getcontcol());
                     ptrG->setSaludables(Nivel1->getleche()->getcontcol());
-                    if (Nivel1) {
-                        delete Nivel1;
-                        Nivel1 = nullptr;
                     }
                 }else if(ptrG->getSalud() <= 0){
-                    if (Nivel1) {
-                        delete Nivel1;
-                        Nivel1 = nullptr;
-                    }
-                    if (!Menu) {
-                        Menu = new menu();
-                    }
+                    replay = true;
                     tiponivel = 0;
+                    ptrG->setPos(215,50);
                 }
+                if (timerS->isActive()) {
+                    timerS->stop();
+                }
+                if (ptrG->scene()) {
+                    ptrG->scene()->removeItem(ptrG);
+                }
+                if (Nivel1) {
+                    delete Nivel1;
+                    Nivel1 = nullptr;
+                }
+
                 cambiarEscena(tiponivel);
-            }
-        });
+            });
+        }
     });
 }
 
@@ -89,17 +92,11 @@ MainWindow::~MainWindow()
 void MainWindow::cambiarEscena(short Escena){
     switch(Escena){
     case 1:
+        if(Nivel1){
         escena = Nivel1->obtenerEscena();
+
         ui->graphicsView->setScene(escena);
-
-        escena->addItem(t1);
-        t1->setPos(195, 3);
-
-        escena->addItem(t2);
-        t2->setPos(170, 3);
-
-        t1->setScale(0.5);
-        t2->setScale(0.5);
+        }
         ui->graphicsView->fitInView(escena->sceneRect(), Qt::KeepAspectRatio);
         break;
     case 2:
@@ -108,15 +105,6 @@ void MainWindow::cambiarEscena(short Escena){
         }
         escena = Nivel2->obtenerEscena();
         ui->graphicsView->setScene(escena);
-
-        //escena->addItem(t1);
-        //t1->setPos(195, 3);
-
-        //escena->addItem(t2);
-        //t2->setPos(170, 3);
-
-        //t1->setScale(0.5);
-        //t2->setScale(0.5);
         ui->graphicsView->fitInView(escena->sceneRect(), Qt::KeepAspectRatio);
         break;
     case 0:

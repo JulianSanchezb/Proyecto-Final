@@ -11,6 +11,8 @@ private:
     jefe *guilan;
     short int energia;
     short int saludables;
+    short int estado;
+    QVector<QPixmap> spritesMuerte;
 public:
     jugador(short int salu, float gravedad, float tiempo, unsigned short int anchoi,unsigned short int altoi,
             float posix, float posiy, float velox, float veloy,unsigned short int nivel);
@@ -21,11 +23,14 @@ public:
     void ataqueBasico();
     void consumir(unsigned short tipo);
     bool colision();
-    void updateSprite();
+    void actualizarSprite();
+    void recibirDano();
 
     //Setters
     void setEnergia(short int e);
     void setSaludables(short int s);
+    void setEstado(short e);
+    void resetAnimtimer();
 };
 
 #endif // JUGADOR_H

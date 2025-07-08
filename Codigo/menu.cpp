@@ -34,10 +34,33 @@ menu::menu(){
     timer->start(360);
 }
 
+menu::~menu() {
+    if (timer) {
+        timer->stop();
+        delete timer;
+        timer = nullptr;
+    }
+
+    if (scene) {
+        delete scene;
+        scene = nullptr;
+    }
+
+}
+
 QGraphicsScene* menu::obtenerEscena(){
     return scene;
 }
 
 QPushButton* menu::getBoton(){
     return boton;
+}
+
+//Setters
+void menu::setTimer(bool des){
+    if(des){
+        timer->start(360);
+    }else{
+        timer->stop();
+    }
 }

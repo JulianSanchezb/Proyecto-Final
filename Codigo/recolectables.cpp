@@ -13,6 +13,7 @@ recolectables::recolectables(int x, int y, unsigned short cantidad, unsigned sho
     prota = Goku;
     timer = new QTimer(this);
     timercol = new QTimer(this);
+
     switch(tipo){
     case 1://esferas
         contador = 1;
@@ -54,6 +55,18 @@ recolectables::recolectables(int x, int y, unsigned short cantidad, unsigned sho
     }
 }
 
+recolectables::~recolectables() {
+    if (timer) {
+        timer->stop();
+    }
+
+    if (timercol) {
+        timercol->stop();
+    }
+
+
+}
+
 void recolectables::posicion(int x){
 
     static int paso = 0;  // estatico para que se mantenga en las llamadas
@@ -72,9 +85,6 @@ void recolectables::posicion(int x){
 
     paso = (paso + 1) % posiciones.size();
 }
-
-
-
 
 bool recolectables::colision(){
     if(collidesWithItem(prota)){

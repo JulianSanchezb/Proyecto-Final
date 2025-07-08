@@ -35,6 +35,7 @@ private:
     int frameCount;
 public:
     obstaculos(float x, float y, float velox, float veloy, float tiempo, float gravedad, int anchoi, int altoi, jugador *Gokui, unsigned short tipo);
+    ~obstaculos();
     QVector<QPixmap> idleFrames;
     QVector<QPixmap> shootFrames;
     bool disparando = false;
