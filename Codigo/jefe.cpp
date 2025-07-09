@@ -193,15 +193,16 @@ void jefe::explosion() {
             setPixmap(hitFrames[frameCount]);
             frameCount++;
             // Daño después de la animación
-            float danioMax = 500.0;
-            float epsilon = 2.0;
+            float danioMax = 700.0;
+            float epsilon = 1.0;
 
             float distancia = std::abs(x() - Goku->x());
-            int danio = danioMax / pow( distancia + epsilon, 2);
+            int danio = danioMax / pow( distancia/15 + epsilon, 2);// division por 15 es un medida de conversion practica
 
 
             if(danio > 5 && Goku->getSalud() > 0){
                 int saludgoku = Goku->getSalud() - danio;
+
                 Goku->setSalud(saludgoku);
                 Goku->setEstado(1);
                 frameIndex = 0;
@@ -266,7 +267,12 @@ void jefe::moveUp() {
         posy += vely;
 
         // Movimiento horizontal
-        posx += (direccion)*3;
+        posx += (direccion)*5;
+        if(x() >= 450){
+            posx = 450;
+        }else if(x() <= 1){
+            posx = 1;
+        }
 
         // Colisión con el suelo
         if (posy >= 190) {

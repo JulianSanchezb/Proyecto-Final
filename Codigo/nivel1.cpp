@@ -57,9 +57,9 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     barraSalud->setValue(Goku->getSalud());
     barraSalud->setFixedSize(34,7);
 
-    proxyWidget = scene->addWidget(barraSalud);
-    proxyWidget->setZValue(10);
-    proxyWidget->setPos(219, 8);
+    proxy = scene->addWidget(barraSalud);
+    proxy->setZValue(10);
+    proxy->setPos(219, 8);
 
     QPixmap img(":/Multimedia/background-1.png");
     scene->setBackgroundBrush(img);
@@ -119,9 +119,21 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
 }
 
 nivel1::~nivel1() {
-    if (timerM) timerM->stop();
-    if (timerP) timerP->stop();
-    if (timerC) timerC->stop();
+    if (timerM) {
+        timerM->stop();
+        delete timerM;
+        timerM = nullptr;
+    }
+    if (timerP) {
+        timerP->stop();
+        delete timerP;
+        timerP = nullptr;
+    }
+    if (timerC) {
+        timerC->stop();
+        delete timerC;
+        timerC = nullptr;
+    }
 
     for (auto* const& b : balas) {
         delete b;
@@ -141,6 +153,21 @@ nivel1::~nivel1() {
 
     delete camara;
     camara = nullptr;
+
+    if (proxy) {
+        delete proxy;
+        proxy = nullptr;
+    }
+
+    if (t1) {
+        delete t1;
+        t1 = nullptr;
+    }
+
+    if (t2) {
+        delete t2;
+        t2 = nullptr;
+    }
 
     if (scene) {
         scene->clear();  // Elimina los items de la escena

@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         tiponivel = 1;
       
-        timerN->start(61000);
+        timerN->start(184000);
         if(!timerS->isActive()){
             timerS->start(200);
         }
@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         if(ptrG->getSalud() <= 0 || limitetiempo){
             timerN->stop();
-            QTimer::singleShot(3000, this, [this]() {
+            QTimer::singleShot(1500, this, [this]() {
                 if(limitetiempo){
                     tiponivel = 2;
                     if(Nivel1){
@@ -180,17 +180,18 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
 
         switch (event->key()) {
             case Qt::Key_W:
-                if (ptrG->getGround()) {
+                if (ptrG->getGround()&& ptrG->getSalud() > 0) {
                     ptrG->moveUp();
                 }
                 break;
             case Qt::Key_R:
                 if (ptrG->getSaludables() > 0) {
                     ptrG->consumir(1);
+                    Nivel2->setT1();
                 }
                 break;
             case Qt::Key_Q:
-                if (ptrG->getEnergia() > 0 && !ptrG->especial) {
+                if (ptrG->getEnergia() > 0 && !ptrG->especial && ptrG->getGround() && ptrG->getSalud() > 0) {
                     ptrG->ataqueEspecial();
                     Nivel2->setT2();
                 }

@@ -257,8 +257,10 @@ void jugador::ataqueBasico() {
 
 void jugador::consumir(unsigned short int tipo) {
     if (tipo == 1 && saludables != 0) {
-        setSalud(getSalud() + 20);
-        saludables--;
+        setSalud(getSalud() + 32);
+        if(saludables > 0){
+            saludables--;
+        }
     }
 }
 
@@ -374,16 +376,17 @@ void jugador::setnivel(unsigned short int nive) {
 
 void jugador::actualizarMovimiento() {
     if (keysPressed.contains(Qt::Key_A) && !keysPressed.contains(Qt::Key_D)) {
-        if(!colision(2)){
+        if(!colision(2) && getSalud() > 0){
          moveLeft();
         }
     } else if (keysPressed.contains(Qt::Key_D) && !keysPressed.contains(Qt::Key_A)) {
-        if(!colision(3)){
+        if(!colision(3) && getSalud() > 0){
          moveRight();
         }
     }else if(keysPressed.contains(Qt::Key_E)&& !keysPressed.contains(Qt::Key_D) && !keysPressed.contains(Qt::Key_A)){
-        ataqueBasico();
-
+        if( getSalud() > 0){
+         ataqueBasico();
+        }
     } else {
         detenerMovimiento();
     }

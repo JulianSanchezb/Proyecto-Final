@@ -23,7 +23,7 @@ class nivel1 : public QObject
     QGraphicsTextItem* t1;
     QGraphicsTextItem* t2;
     QProgressBar* barraSalud;
-    QGraphicsProxyWidget* proxyWidget;
+    QGraphicsProxyWidget* proxy;
 public:
     nivel1(jugador* goku);
     ~nivel1();
