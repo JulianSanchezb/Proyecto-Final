@@ -23,7 +23,10 @@ public:
             float posix, float posiy, float velox, float veloy);
     QTimer* animTimer = nullptr;
     QSet<int> keysPressed;
-    void moveUp2();
+
+    void moveUp1();
+    void moveRight1();
+    void moveLeft1();
     void moveDown();
     void moveUp();
     void moveRight();
@@ -35,6 +38,10 @@ public:
     void actualizarSprite();
     void recibirDano();
     void detenerMovimiento();
+
+    //Getters
+    short int getSaludables();
+    short int getEnergia();
 
     //Setters
     void setEnergia(short int e);

@@ -31,8 +31,6 @@ private:
     QTimer* timerS;
     QTimer* timerN;
     menu* Menu = nullptr;
-    QGraphicsTextItem* t1;
-    QGraphicsTextItem* t2;
     bool limitetiempo = false;
     nivel1* Nivel1 = nullptr;
     nivel2* Nivel2 = nullptr;

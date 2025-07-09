@@ -39,6 +39,28 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     t1->setScale(0.5);
     t2->setScale(0.5);
 
+    barraSalud = new QProgressBar();
+    barraSalud->setRange(0, 500);
+    barraSalud->setTextVisible(0);
+    barraSalud->setStyleSheet(
+        "QProgressBar {"
+        "  border: 2px solid transparent;"
+        "  border-radius: 1px;"
+        "  text-align: center;"
+        "  background-color: transparent;"
+        "}"
+        "QProgressBar::chunk {"
+        "  background-color: red;"
+        "  width: 2px;"
+        "}"
+        );
+    barraSalud->setValue(Goku->getSalud());
+    barraSalud->setFixedSize(34,7);
+
+    proxyWidget = scene->addWidget(barraSalud);
+    proxyWidget->setZValue(10);
+    proxyWidget->setPos(219, 8);
+
     QPixmap img(":/Multimedia/background-1.png");
     scene->setBackgroundBrush(img);
     scene->setSceneRect(img.rect());
@@ -89,9 +111,9 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
         if (getleche()->getvisibilidad()) {
             t2->setPlainText(QString::number(getleche()->getcontcol()));
         }
+        barraSalud->setValue(Goku->getSalud());
     });
-
-    timerC->start(1400);
+    timerC->start(500);
 }
 
 nivel1::~nivel1() {
@@ -123,8 +145,6 @@ nivel1::~nivel1() {
         delete scene;
         scene = nullptr;
     }
-
-    //Goku = nullptr;
 }
 
 void nivel1::mostrar_obstaculo(QVector<obstaculos*> contenedor, int cantidad, int x, int y) {// puede ser plantilla para pajaros y balas.
