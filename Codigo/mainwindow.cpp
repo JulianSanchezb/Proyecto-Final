@@ -19,6 +19,15 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFocusPolicy(Qt::StrongFocus);  // El MainWindow escucha teclas
     ui->graphicsView->setFocusPolicy(Qt::NoFocus);  // Elimina interferencia
 
+    movimientoTimer = new QTimer(this);
+    connect(movimientoTimer, &QTimer::timeout, this, [=]() {
+        if (tiponivel == 2 && ptrG) {
+            ptrG->actualizarMovimiento();
+        }
+    });
+    movimientoTimer->start(30);
+
+
     Menu = new menu();
 
     QTimer::singleShot(0, this, [this]() {
@@ -34,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
         tiponivel = 1;
 
         ui->progressBar->setVisible(true);
-        timerN->start(60000);
+        timerN->start(1000);
         timerS->start(200);
         cambiarEscena(tiponivel);
     });
@@ -151,42 +160,30 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
         }
 
     }else if (tiponivel == 2){
+        if (!event->isAutoRepeat()) {
+            ptrG->keysPressed.insert(event->key());
+        }
+
         switch (event->key()) {
         case Qt::Key_W:
-            if(ptrG->getGround()){
+            if (ptrG->getGround()) {
                 ptrG->moveUp();
             }
             break;
-        case Qt::Key_A:
-            if(x() >= 3){
-                ptrG->keysPressed.insert(Qt::Key_A);
-                ptrG->moveLeft();
-            }
-            break;
-        case Qt::Key_D:
-            if(x() <= 420){
-                ptrG->keysPressed.insert(Qt::Key_D);
-                ptrG->moveRight();
-            }
-            break;
         }
-
-        }
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent* event) {
     if (!ptrG) return;
 
-    // Solo queremos detener el movimiento si estamos en nivel 2
     if (tiponivel == 2) {
-        ptrG->keysPressed.remove(event->key());
-
-        if (!ptrG->keysPressed.contains(Qt::Key_A) && !ptrG->keysPressed.contains(Qt::Key_D)) {
-            ptrG->detenerMovimiento();  // Solo detiene si ninguna tecla está presionada
+        if (!event->isAutoRepeat()) {
+            ptrG->keysPressed.remove(event->key());
         }
 
         if (event->key() == Qt::Key_W && ptrG->getGround()) {
-            ptrG->setPixmap(ptrG->idleFrames[0]);  // Mostrar sprite en reposo tras salto
+            ptrG->setPixmap(ptrG->idleFrames[0]);  // Sprite en reposo
         }
     }
 }

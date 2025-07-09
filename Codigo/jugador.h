@@ -18,10 +18,13 @@ private:
     bool banderapos;
     unsigned short int nivel = 1;
     short int direccionMovimiento = 0;
+    bool atacando = false;
+
 public:
     jugador(short int salu, float gravedad, float tiempo, unsigned short int anchoi,unsigned short int altoi,
             float posix, float posiy, float velox, float veloy);
     QTimer* animTimer = nullptr;
+    QTimer* movTimer = nullptr;
     QSet<int> keysPressed;
     void moveUp2();
     void moveDown();
@@ -31,11 +34,16 @@ public:
     void ataqueEpecial();
     void ataqueBasico();
     void consumir(unsigned short tipo);
-    bool colision();
+    bool colision(int caso);
     void actualizarSprite();
     void recibirDano();
     void detenerMovimiento();
+    void actualizarMovimiento();
+    bool derecha= false;
+    bool izquierda = false;
+    bool especial = false;
 
+    int getdireccion();
     //Setters
     void setEnergia(short int e);
     void setSaludables(short int s);

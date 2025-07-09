@@ -30,6 +30,7 @@ private:
     jugador* ptrG;
     QTimer* timerS;
     QTimer* timerN;
+    QTimer* movimientoTimer;
     menu* Menu = nullptr;
     QGraphicsTextItem* t1;
     QGraphicsTextItem* t2;
