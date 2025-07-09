@@ -30,6 +30,7 @@ private:
     jugador* ptrG;
     QTimer* timerS;
     QTimer* timerN;
+    QTimer* movimientoTimer;
     menu* Menu = nullptr;
     bool limitetiempo = false;
     nivel1* Nivel1 = nullptr;

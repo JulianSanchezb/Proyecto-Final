@@ -13,6 +13,7 @@ class nivel2 : public QObject
 {
     QGraphicsScene *scene;
     QVector<obstaculos *> proyectiles;
+    QVector<obstaculos *> esferas;
     QTimer* timerP;
     QGraphicsTextItem* t1;
     QGraphicsTextItem* t2;
@@ -23,7 +24,7 @@ public:
     ~nivel2();
     jugador* Goku;
     jefe* Giran;
-    void mostrar_obstaculo(QVector<obstaculos *> &contenedor, int cantidad, int x, int y, int direccion);
+    void mostrar_obstaculo(QVector<obstaculos *> &contenedor, int cantidad, int x, int y, int direccion, bool tipo);
     void creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned short int tipo);
     //getter
     QGraphicsScene* obtenerEscena();

@@ -9,6 +9,7 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     timerP(new QTimer(this))
 {
     creacion(proyectiles,3,3);
+    creacion(esferas,1,4);
 
     QPixmap img(":/Multimedia/arena.png");
     scene->setBackgroundBrush(img);
@@ -81,9 +82,12 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     qDebug()<<Goku->pos();
     connect(timerP, &QTimer::timeout, this, [=]() {
         if(Giran->x() >= 390 && Giran->x() <= 430){
-            mostrar_obstaculo(proyectiles, 3, 50, 20,-1);
+            mostrar_obstaculo(proyectiles, 3, 50, 20,-1,1);
         }else if(Giran->x()<=10 && Giran->x() >= 1){
-            mostrar_obstaculo(proyectiles, 3, 50, 20,1);
+            mostrar_obstaculo(proyectiles, 3, 50, 20,1,1);
+        }
+        if(Goku->especial && Goku->getEnergia() > 0){
+             mostrar_obstaculo(esferas,1,50,20,Goku->getdireccion(),0);
         }
         barraSalud->setValue(Goku->getSalud());
     });
@@ -130,11 +134,19 @@ nivel2::~nivel2() {
     }
 }
 
-void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad, int x, int y, int direccion) {// puede ser plantilla para pajaros y balas.
+void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad,
+                               int x, int y, int direccion,bool tipo) {// puede ser plantilla para pajaros y balas.
     QPointF posicion = QPointF(x,y);
+    QPointF inicio;
+
+    if(tipo){
+        inicio = Giran->pos();
+    }else{
+        inicio = Goku->pos();
+    }
     for (int i = 0; i < cantidad; ++i) {
         if (!contenedor[i]->getdisponible()){
-            QPointF origen = Giran->pos()  + posicion;  // punto desde donde sale la bala, modificar 200 y 50
+            QPointF origen = inicio  + posicion;  // punto desde donde sale la bala, modificar 200 y 50
             contenedor[i]->activar(origen,100);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
             contenedor[i]->direccion = direccion;
             break;

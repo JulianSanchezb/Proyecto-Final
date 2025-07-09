@@ -71,7 +71,7 @@ jefe::jefe(unsigned short int salu, int gravedad, int tiempo, unsigned short int
             if(x() >= 390 && x() <= 430){
                 ataqueBasico(0);
                 banderapos = false;
-            }else if(x() <= 1 && x() >= 4){
+            }else if(x() >= 1 && x() <= 4){
                 ataqueBasico(1);
                 banderapos = true;
             }
@@ -170,7 +170,6 @@ void jefe::ataqueBasico(bool posicion) {
     });
     ataqueTimer->start(200);  // 200 ms por frame
 }
-
 
 
 void jefe::explosion() {
