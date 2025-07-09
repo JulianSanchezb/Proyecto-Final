@@ -195,7 +195,8 @@ void jugador::moveLeft() {
     movTimer->start(100);
 }
 
-void jugador::ataqueEpecial() {
+void jugador::ataqueEspecial() {
+    ataqueBasico();
     especial = true;
     energia --;
 }

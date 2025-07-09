@@ -162,11 +162,22 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
         }
 
         switch (event->key()) {
-        case Qt::Key_W:
-            if (ptrG->getGround()) {
-                ptrG->moveUp();
-            }
-            break;
+            case Qt::Key_W:
+                if (ptrG->getGround()) {
+                    ptrG->moveUp();
+                }
+                break;
+            case Qt::Key_R:
+                if (ptrG->getSaludables() > 0) {
+                    ptrG->consumir(1);
+                }
+                break;
+            case Qt::Key_Q:
+                if (ptrG->getEnergia() > 0) {
+                    ptrG->ataqueEspecial();
+                    //ptrG->especial = false;
+                }
+                break;
         }
     }
 }

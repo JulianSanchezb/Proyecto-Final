@@ -9,7 +9,7 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     timerP(new QTimer(this))
 {
     creacion(proyectiles,3,3);
-    creacion(esferas,1,4);
+    creacion(esferas,7,5);
 
     QPixmap img(":/Multimedia/arena.png");
     scene->setBackgroundBrush(img);
@@ -87,11 +87,13 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
             mostrar_obstaculo(proyectiles, 3, 50, 20,1,1);
         }
         if(Goku->especial && Goku->getEnergia() > 0){
-             mostrar_obstaculo(esferas,1,50,20,Goku->getdireccion(),0);
+            //qDebug()<<"entro";
+            mostrar_obstaculo(esferas,1,50,20,Goku->getdireccion(),0);
         }
         barraSalud->setValue(Goku->getSalud());
     });
-    timerP->start(500);
+    timerP->start(100);
+    Goku->setEnergia(7);
 }
 
 nivel2::~nivel2() {
@@ -135,7 +137,7 @@ nivel2::~nivel2() {
 }
 
 void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad,
-                               int x, int y, int direccion,bool tipo) {// puede ser plantilla para pajaros y balas.
+                               int x, int y, int direccion,bool tipo) {
     QPointF posicion = QPointF(x,y);
     QPointF inicio;
 
@@ -146,6 +148,7 @@ void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad,
     }
     for (int i = 0; i < cantidad; ++i) {
         if (!contenedor[i]->getdisponible()){
+            qDebug()<<"Disponible";
             QPointF origen = inicio  + posicion;  // punto desde donde sale la bala, modificar 200 y 50
             contenedor[i]->activar(origen,100);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
             contenedor[i]->direccion = direccion;
@@ -154,13 +157,15 @@ void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad,
     }
 }
 
-
 void nivel2::creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned short int tipo) {
     for (int i = 0; i < cantidad; ++i) {
         obstaculos* obj = new obstaculos(0, 0, 0, 0, 0, -1.5, 15, 15, Goku, tipo);
         contenedor.append(obj);
         scene->addItem(obj);
         obj->desactivar();
+        if(tipo == 5){
+            obj->setGuiran(Giran);
+        }
     }
 }
 

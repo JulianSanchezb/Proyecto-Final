@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QtMath>
 class jugador;
+class jefe;
 
 class obstaculos: public QGraphicsPixmapItem, public QObject
 {
@@ -27,6 +28,7 @@ private:
     int limitederecha;
     int ancho, alto;
     jugador* Goku;
+    jefe* Guiran;
     QTimer* timer;
     unsigned short tipo;
     bool disponible;
@@ -41,18 +43,19 @@ public:
     QVector<QPixmap> shootFrames;
     bool disparando = false;
     void animarDisparo();
-    //QRectF boundingRect() const override;
     void desactivar();
     void activar(QPointF posicion, int tiempo);
     bool colision();
     bool getdisponible();
+
     bool setDisponible(bool tipo);
+    void setGuiran(jefe* g);
 public slots:
     void moveeny();
     void moveSenoidal();
     void moveParabolico();
     void moveRecto();
-
+    void moveEsfera();
 };
 
 #endif // OBSTACULOS_H

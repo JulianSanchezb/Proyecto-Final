@@ -34,7 +34,7 @@ public:
     void moveUp()override;
     void moveRight()override;
     void moveLeft()override;
-    void ataqueEpecial();
+    void ataqueEspecial();
     void ataqueBasico();
     void consumir(unsigned short tipo);
     bool colision(int caso);
