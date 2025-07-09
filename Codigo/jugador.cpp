@@ -25,10 +25,21 @@ jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short in
     qDebug() << nivel;
 }
 
-void jugador::moveUp2(){
+void jugador::moveUp1(){
     posy -= vely;
     setPos(posx, posy);
 }
+
+void jugador::moveRight1(){
+    posx += velx;
+    setPos(posx, posy);
+}
+
+void jugador::moveLeft1(){
+    posx -= velx;
+    setPos(posx, posy);
+}
+
 
 void jugador::moveDown() {
     posy += vely;
@@ -87,7 +98,6 @@ void jugador::moveUp() {
 
         setPos(posx, posy);
     });
-
     saltoTimer->start(50);
 }
 
@@ -143,11 +153,11 @@ void jugador::actualizarSprite() {
         break;
     case 1:
         setPixmap(hitFrames[frameIndex % hitFrames.size()]);
-        if (++frameIndex >= hitFrames.size()) {
+        if (frameIndex >= hitFrames.size()) {
             frameIndex = 0;
             estado = 0;
         }
-        return;
+        break;
     case 2:
         if (frameIndex < spritesMuerte.size()) {
             setPixmap(spritesMuerte[frameIndex]);
@@ -166,6 +176,11 @@ void jugador::recibirDano() {
     }
 }
 
+//Getters
+short int jugador::getSaludables(){return saludables;}
+short int jugador::getEnergia(){return energia;}
+
+//Setters
 void jugador::setEnergia(short int e) { energia = e; }
 void jugador::setSaludables(short int s) { saludables = s; }
 void jugador::setEstado(short int e) { estado = e; }
@@ -230,7 +245,10 @@ void jugador::setnivel(unsigned short int nive) {
     if (!animTimer) {
         animTimer = new QTimer(this);
         connect(animTimer, &QTimer::timeout, this, [=]() {
-            if (getSalud() <= 0) estado = 2;
+            if (getSalud() <= 0 && estado != 2){
+                frameIndex = 0;
+                estado = 2;
+            }
             actualizarSprite();
             if (direccionMovimiento != 0) {
                 posx += direccionMovimiento * velx;

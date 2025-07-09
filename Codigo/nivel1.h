@@ -2,6 +2,8 @@
 #define NIVEL1_H
 #include <QGraphicsScene>
 #include <QTimer>
+#include <QProgressBar>
+#include <QGraphicsProxyWidget>
 
 class obstaculos;
 class jugador;
@@ -20,6 +22,8 @@ class nivel1 : public QObject
     recolectables* leche;
     QGraphicsTextItem* t1;
     QGraphicsTextItem* t2;
+    QProgressBar* barraSalud;
+    QGraphicsProxyWidget* proxyWidget;
 public:
     nivel1(jugador* goku);
     ~nivel1();
@@ -29,6 +33,7 @@ public:
     void mostrar_obstaculo(QVector<obstaculos *> contenedor, int cantidad, int x, int y);
     QGraphicsScene* obtenerEscena();
     void crearNube(const QString& rutaImagen, QPointF posicionInicial, float velocidad);
+
     //getter
     jugador* getGoku();
     recolectables* getleche();
