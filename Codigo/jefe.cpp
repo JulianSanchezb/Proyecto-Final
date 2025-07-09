@@ -7,7 +7,6 @@ using namespace std;
 jefe::jefe(unsigned short int salu, int gravedad, int tiempo, unsigned short int anchoi,
            unsigned short int altoi, int posix, int posiy, int velox, int veloy,
            jugador* goku)
-    //: QGraphicsPixmapItem(nullptr) // hereda de QGraphicsPixmapItem
 {
     // Atributos básicos
     setSalud(salu);
@@ -92,7 +91,7 @@ jefe::jefe(unsigned short int salu, int gravedad, int tiempo, unsigned short int
         }
 
 
-        if(getSalud() <= 50 && !bandera){
+        if(getSalud() <= 350 && !bandera){
             bandera = true;
             if (!Timersecond->isActive()) {
                 connect(Timersecond, &QTimer::timeout, this, [this]() {
@@ -120,9 +119,6 @@ jefe::jefe(unsigned short int salu, int gravedad, int tiempo, unsigned short int
 
     });
     animTimer->start(300);
-
-
-
 }
 
 void jefe::ataqueBasico(bool posicion) {
@@ -160,8 +156,13 @@ void jefe::ataqueBasico(bool posicion) {
 
             // Daño si colisiona (una sola vez, después de la animación)
             if (colision()) {
-                int saludgoku = Goku->getSalud() - 5;
+                int saludgoku = Goku->getSalud() - 10;
                 Goku->setSalud(saludgoku);
+                if(Goku->getSalud() > 0){
+                    Goku->setEstado(1);
+                    frameIndex = 0;
+                    //Goku->actualizarSprite();
+                }
             }
             if (!animTimer->isActive()) {
                 animTimer->start();  // o solo start() si ya configuraste el intervalo
@@ -192,20 +193,21 @@ void jefe::explosion() {
             setPixmap(hitFrames[frameCount]);
             frameCount++;
             // Daño después de la animación
-            float danioMax = 250.0;
+            float danioMax = 500.0;
             float epsilon = 2.0;
-
 
             float distancia = std::abs(x() - Goku->x());
             int danio = danioMax / pow( distancia + epsilon, 2);
 
-            int saludgoku = Goku->getSalud() - danio;
 
-            if(Goku->getSalud() > 0 && danio > 5){
+            if(danio > 5 && Goku->getSalud() > 0){
+                int saludgoku = Goku->getSalud() - danio;
+                Goku->setSalud(saludgoku);
                 Goku->setEstado(1);
                 frameIndex = 0;
+                //Goku->actualizarSprite();
             }
-            Goku->setSalud(saludgoku);
+
         } else {
 
             explosionTimer->stop();
@@ -217,7 +219,7 @@ void jefe::explosion() {
         }
 
     });
-    explosionTimer->start(300);  // 200 ms por frame
+    explosionTimer->start(200);  // 200 ms por frame
 
 }
 

@@ -18,7 +18,10 @@ class nivel2 : public QObject
     QGraphicsTextItem* t1;
     QGraphicsTextItem* t2;
     QProgressBar* barraSalud;
-    QGraphicsProxyWidget* proxyWidget;
+    QGraphicsProxyWidget* proxy1;
+    QProgressBar* barraGiran;
+    QGraphicsProxyWidget* proxy2;
+    bool variable = true;
 public:
     nivel2(jugador *goku);
     ~nivel2();
@@ -29,7 +32,7 @@ public:
     //getter
     QGraphicsScene* obtenerEscena();
     jugador* getGoku();
-
+    jefe* getGiran();
     //setter
     void setGoku(jugador* goku);
     void setT1();

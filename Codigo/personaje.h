@@ -24,7 +24,6 @@ public:
     int frameCount;
     QVector<QPixmap> idleFrames;
     QVector<QPixmap> hitFrames;
-    //QPointF pos;
     float posx;
     float posy;
     float velx;
@@ -47,6 +46,8 @@ public:
     void setSalud(short int s);
     void setPosx(float x);
     void setPosy(float y);
+    void setVelx(float x);
+    void setVely(float y);
     void setGravedad(float gr);
     void setAncho(unsigned short int an);
     void setAlto(unsigned short int al);

@@ -91,6 +91,12 @@ void jugador::moveUp() {
         posy += vely;
         posx += direccion * 10;
 
+        if(colision(3)){
+            posx = 450;
+        }else if(colision(2)){
+            posx = 4;
+        }
+
         if (posy >= 190) {
             posy = 190;
             vely = 0;
@@ -105,7 +111,6 @@ void jugador::moveUp() {
         } else {
             setGround(false);
         }
-
         setPos(posx, posy);
     });
     saltoTimer->start(100);
@@ -114,7 +119,6 @@ void jugador::moveUp() {
 void jugador::moveRight() {
     velx = 10;
     animTimer->stop();
-    estado = 3;
     if (direccionMovimiento == 1) return;
 
     banderapos = true;
@@ -141,7 +145,6 @@ void jugador::moveRight() {
         } else {
             frameCount = 0;
         }
-
         if (!colision(3)) {
             posx += velx;
             setPos(posx, posy);
@@ -156,7 +159,6 @@ void jugador::moveRight() {
 void jugador::moveLeft() {
     velx = 10;
     animTimer->stop();
-    estado = 3;
     if (direccionMovimiento == -1) return;
 
     banderapos = false;
@@ -198,6 +200,9 @@ void jugador::moveLeft() {
 void jugador::ataqueEspecial() {
     ataqueBasico();
     especial = true;
+    QTimer::singleShot(1000, this, [=]() {
+        especial = false;
+    });
     energia --;
 }
 
@@ -234,7 +239,7 @@ void jugador::ataqueBasico() {
 
             // Colisión con enemigo durante el ataque
             if (colision(1)) {
-                short int saludGuilan = guilan->getSalud() - 5;
+                short int saludGuilan = guilan->getSalud() - 10;
                 guilan->setSalud(saludGuilan);
             }
         } else {
@@ -264,15 +269,15 @@ bool jugador::colision(int caso) {
     case 2:
         return posx <= 4;
     case 3:
-        return posx >= 420;
+        return posx >= 450;
     default:
         return false;
     }
 }
 
 void jugador::actualizarSprite() {
-    if (direccionMovimiento != 0 || !getGround()) return;
-
+    //if (direccionMovimiento != 0 || !getGround()) return;
+    //qDebug()<<estado;
     switch (estado) {
     case 0:
         setPixmap(idleFrames[frameIndex % idleFrames.size()]);
@@ -297,19 +302,6 @@ void jugador::actualizarSprite() {
         break;
     }
     frameIndex++;
-}
-
-//Getters
-short int jugador::getSaludables(){return saludables;}
-short int jugador::getEnergia(){return energia;}
-
-//Setters
-void jugador::setEnergia(short int e) { energia = e; }
-void jugador::setSaludables(short int s) { saludables = s; }
-void jugador::setEstado(short int e) { estado = e; }
-
-void jugador::resetAnimtimer() {
-    if (animTimer) animTimer->start(200);
 }
 
 void jugador::detenerMovimiento() {
@@ -356,12 +348,12 @@ void jugador::setnivel(unsigned short int nive) {
         idleFrames.append(QPixmap(":/Multimedia/goku3.04.png").scaled(90,90));
         idleFrames.append(QPixmap(":/Multimedia/goku3.05.png").scaled(90,90));
 
-        hitFrames.append(QPixmap(":/Multimedia/goku6.01png"));
-        hitFrames.append(QPixmap(":/Multimedia/goku6.02png"));
-        hitFrames.append(QPixmap(":/Multimedia/goku6.03png"));
-        hitFrames.append(QPixmap(":/Multimedia/goku6.04png"));
+        hitFrames.append(QPixmap(":/Multimedia/goku6.01.png").scaled(90,90));
+        hitFrames.append(QPixmap(":/Multimedia/goku6.02.png").scaled(90,90));
+        hitFrames.append(QPixmap(":/Multimedia/goku6.03.png").scaled(90,90));
+        hitFrames.append(QPixmap(":/Multimedia/goku6.04.png").scaled(90,90));
 
-        spritesMuerte.append(QPixmap(":/Multimedia/goku7.png"));
+        spritesMuerte.append(QPixmap(":/Multimedia/goku7.png").scaled(90,90));
 
         break;
     }
@@ -374,15 +366,6 @@ void jugador::setnivel(unsigned short int nive) {
                 estado = 2;
             }
             actualizarSprite();
-            if (direccionMovimiento != 0) {
-                posx += direccionMovimiento * velx;
-                setPos(posx, posy);
-
-                if (!moveFrames.isEmpty()) {
-                    setPixmap(moveFrames[frameCount % moveFrames.size()]);
-                    frameCount++;
-                }
-            }
         });
         animTimer->start(100);
     }
@@ -406,10 +389,21 @@ void jugador::actualizarMovimiento() {
     }
 }
 
+//Getters
+short int jugador::getSaludables(){return saludables;}
+short int jugador::getEnergia(){return energia;}
 int jugador::getdireccion(){
     return direccionMovimiento;
 }
 
+//Setters
+void jugador::setEnergia(short int e) { energia = e; }
+void jugador::setSaludables(short int s) { saludables = s; }
+void jugador::setEstado(short int e) { estado = e; }
+void jugador::setGuilan(jefe* G){guilan = G;}
+void jugador::resetAnimtimer() {
+    if (animTimer) animTimer->start(200);
+}
 
 
 

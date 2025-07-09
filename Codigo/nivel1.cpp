@@ -75,6 +75,8 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     scene->addItem(Goku);
     Goku->setPos(215,50);
     Goku->setScale(0.5);
+    Goku->setVelx(5);
+    Goku->setVely(5);
     scene->addItem(camara);
     camara->setPos(1,1);
 

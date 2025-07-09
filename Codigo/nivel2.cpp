@@ -5,11 +5,11 @@
 
 nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     Goku(goku),
-    Giran(new jefe(250, 1.5, 0, 100, 70, 4, 180, 5, 5, Goku)),
+    Giran(new jefe(700, 1.5, 0, 100, 70, 4, 180, 5, 5, Goku)),
     timerP(new QTimer(this))
 {
     creacion(proyectiles,3,3);
-    creacion(esferas,7,5);
+    creacion(esferas,1,5);
 
     QPixmap img(":/Multimedia/arena.png");
     scene->setBackgroundBrush(img);
@@ -21,6 +21,11 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     QGraphicsPixmapItem* vida = scene->addPixmap(saludEscalada);
     vida->setPos(423,-10);
     vida->setZValue(10);
+
+    QPixmap saludE = salud.scaled(125,102);
+    QGraphicsPixmapItem* vidaGiran = scene->addPixmap(saludE);
+    vidaGiran->setPos(0,-25);
+    vidaGiran->setZValue(10);
 
     QPixmap imgEsfera(":/Multimedia/esfera1.png");
     QGraphicsPixmapItem* esfera = scene->addPixmap(imgEsfera);
@@ -67,32 +72,61 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     barraSalud->setValue(Goku->getSalud());
     barraSalud->setFixedSize(63,11);
 
-    proxyWidget = scene->addWidget(barraSalud);
-    proxyWidget->setZValue(11);
-    proxyWidget->setPos(445,18);
+    proxy1 = scene->addWidget(barraSalud);
+    proxy1->setZValue(11);
+    proxy1->setPos(445,18);
+
+    barraGiran = new QProgressBar();
+    barraGiran->setRange(0, 700);
+    barraGiran->setTextVisible(0);
+
+    barraGiran->setStyleSheet(
+        "QProgressBar {"
+        "  border: 2px solid transparent;"
+        "  border-radius: 1px;"
+        "  text-align: center;"
+        "  background-color: transparent;"
+        "}"
+        "QProgressBar::chunk {"
+        "  background-color: #a8b850;"
+        "  width: 2px;"
+        "}"
+        );
+
+    barraGiran->setValue(Giran->getSalud());
+    barraGiran->setFixedSize(87,14);
+
+    proxy2 = scene->addWidget(barraGiran);
+    proxy2->setZValue(11);
+    proxy2->setPos(29,23);
 
     scene->addItem(Goku);
     Goku->setPos(370,200);
     Goku->setScale(0.5);
+    Goku->setGuilan(Giran);
 
     scene->addItem(Giran);
     Giran->setPos(4,180);
     Giran->setScale(0.5);
 
-    qDebug()<<Goku->pos();
+
     connect(timerP, &QTimer::timeout, this, [=]() {
         if(Giran->x() >= 390 && Giran->x() <= 430){
             mostrar_obstaculo(proyectiles, 3, 50, 20,-1,1);
         }else if(Giran->x()<=10 && Giran->x() >= 1){
             mostrar_obstaculo(proyectiles, 3, 50, 20,1,1);
         }
-        if(Goku->especial && Goku->getEnergia() > 0){
-            //qDebug()<<"entro";
+        if(Goku->especial && Goku->getEnergia() > 0 && variable == true){
+            variable = false;
             mostrar_obstaculo(esferas,1,50,20,Goku->getdireccion(),0);
+            QTimer::singleShot(1000, this, [=]() {
+                variable = true;
+            });
         }
         barraSalud->setValue(Goku->getSalud());
+        barraGiran->setValue(Giran->getSalud());
     });
-    timerP->start(100);
+    timerP->start(200);
     Goku->setEnergia(7);
 }
 
@@ -102,15 +136,25 @@ nivel2::~nivel2() {
         delete timerP;
         timerP = nullptr;
     }
-
+    /*
     if (barraSalud) {
         delete barraSalud;
         barraSalud = nullptr;
     }
 
-    if (proxyWidget) {
-        delete proxyWidget;
-        proxyWidget = nullptr;
+    if (barraGiran) {
+        delete barraGiran;
+        barraGiran = nullptr;
+    }
+
+    if (proxy1) {
+        delete proxy1;
+        proxy1 = nullptr;
+    }
+
+    if (proxy2) {
+        delete proxy2;
+        proxy2 = nullptr;
     }
 
     if (t1) {
@@ -121,13 +165,13 @@ nivel2::~nivel2() {
     if (t2) {
         delete t2;
         t2 = nullptr;
-    }
-
+    }*/
+    /*
     if (Giran) {
         scene->removeItem(Giran);
         delete Giran;
         Giran = nullptr;
-    }
+    }*/
 
     if (scene) {
         scene->clear();
@@ -146,12 +190,15 @@ void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad,
     }else{
         inicio = Goku->pos();
     }
-    for (int i = 0; i < cantidad; ++i) {
+    for (int i = 0; i <= cantidad; ++i) {
         if (!contenedor[i]->getdisponible()){
-            qDebug()<<"Disponible";
             QPointF origen = inicio  + posicion;  // punto desde donde sale la bala, modificar 200 y 50
             contenedor[i]->activar(origen,100);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
             contenedor[i]->direccion = direccion;
+            if(!tipo){
+                qDebug()<<contenedor[i]->pos();
+            }
+
             break;
         }
     }
@@ -178,6 +225,9 @@ jugador* nivel2::getGoku(){
     return Goku;
 }
 
+jefe* nivel2::getGiran(){
+    return Giran;
+}
 
 //setter
 void nivel2::setGoku(jugador* goku){

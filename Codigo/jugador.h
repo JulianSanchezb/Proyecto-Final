@@ -58,6 +58,7 @@ public:
     void setEstado(short e);
     void resetAnimtimer();
     void setnivel(unsigned short int nive);
+    void setGuilan(jefe* G);
 };
 
 #endif // JUGADOR_H
