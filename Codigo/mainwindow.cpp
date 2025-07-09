@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "jugador.h"
+#include "jefe.h"
 #include "nivel1.h"
 #include "nivel2.h"
 #include "recolectables.h"
@@ -42,8 +43,10 @@ MainWindow::MainWindow(QWidget *parent)
 
         tiponivel = 1;
       
-        timerN->start(1000);
-        timerS->start(200);
+        timerN->start(184000);
+        if(!timerS->isActive()){
+            timerS->start(200);
+        }
         cambiarEscena(tiponivel);
     });
 
@@ -61,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         if(ptrG->getSalud() <= 0 || limitetiempo){
             timerN->stop();
-            QTimer::singleShot(3000, this, [this]() {
+            QTimer::singleShot(1500, this, [this]() {
                 if(limitetiempo){
                     tiponivel = 2;
                     if(Nivel1){
@@ -71,6 +74,23 @@ MainWindow::MainWindow(QWidget *parent)
                     if (!Nivel2){
                         Nivel2 = new nivel2(ptrG);
                     }
+                    if(Nivel2->getGiran()->getSalud() <= 0 || ptrG->getSalud() <= 0){
+                        QTimer::singleShot(3000, this, [this](){
+                            replay = true;
+                            limitetiempo = false;
+                            ptrG->setSaludables(0);
+                            ptrG->setEnergia(0);
+                            if (ptrG->scene()){
+                                ptrG->scene()->removeItem(ptrG);
+                            }
+                            tiponivel = 0;
+                            if(Nivel2){
+                                delete Nivel2;
+                                Nivel2 = nullptr;
+                            }
+                            cambiarEscena(tiponivel);
+                        });
+                    }
                 }else if(ptrG->getSalud() <= 0){
                     replay = true;
                     tiponivel = 0;
@@ -78,9 +98,6 @@ MainWindow::MainWindow(QWidget *parent)
                     if (ptrG->scene()){
                         ptrG->scene()->removeItem(ptrG);
                     }
-                }
-                if (timerS->isActive()){
-                    timerS->stop();
                 }
                 if (Nivel1) {
                     delete Nivel1;
@@ -135,22 +152,22 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
     if(tiponivel == 1){
         switch (event->key()) {
         case Qt::Key_W:
-            if(ptrG->y()>=0){
+            if(ptrG->y()>=0 && ptrG->getSalud() > 0 && !limitetiempo){
                 ptrG->moveUp1();
             }
             break;
         case Qt::Key_S:
-            if(ptrG->y()<=95){
+            if(ptrG->y()<=95 && ptrG->getSalud() > 0 && !limitetiempo){
                 ptrG->moveDown();
             }
             break;
         case Qt::Key_A:
-            if(ptrG->x()>=0){
+            if(ptrG->x()>=0 && ptrG->getSalud() > 0 && !limitetiempo){
                 ptrG->moveLeft1();
             }
             break;
         case Qt::Key_D:
-            if(ptrG->x()<=220){
+            if(ptrG->x()<=220 && ptrG->getSalud() > 0 && !limitetiempo){
                 ptrG->moveRight1();
             }
             break;
@@ -162,11 +179,23 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
         }
 
         switch (event->key()) {
-        case Qt::Key_W:
-            if (ptrG->getGround()) {
-                ptrG->moveUp();
-            }
-            break;
+            case Qt::Key_W:
+                if (ptrG->getGround()&& ptrG->getSalud() > 0) {
+                    ptrG->moveUp();
+                }
+                break;
+            case Qt::Key_R:
+                if (ptrG->getSaludables() > 0) {
+                    ptrG->consumir(1);
+                    Nivel2->setT1();
+                }
+                break;
+            case Qt::Key_Q:
+                if (ptrG->getEnergia() > 0 && !ptrG->especial && ptrG->getGround() && ptrG->getSalud() > 0) {
+                    ptrG->ataqueEspecial();
+                    Nivel2->setT2();
+                }
+                break;
         }
     }
 }

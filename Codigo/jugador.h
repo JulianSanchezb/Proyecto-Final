@@ -34,7 +34,7 @@ public:
     void moveUp()override;
     void moveRight()override;
     void moveLeft()override;
-    void ataqueEpecial();
+    void ataqueEspecial();
     void ataqueBasico();
     void consumir(unsigned short tipo);
     bool colision(int caso);
@@ -58,6 +58,7 @@ public:
     void setEstado(short e);
     void resetAnimtimer();
     void setnivel(unsigned short int nive);
+    void setGuilan(jefe* G);
 };
 
 #endif // JUGADOR_H

@@ -83,6 +83,14 @@ void personaje::setPosy(float y){
     posy = y;
 }
 
+void personaje::setVelx(float x){
+    velx =x;
+}
+
+void personaje::setVely(float y){
+    vely =y;
+}
+
 void personaje::setGravedad(float gr){
     g = gr;
 }

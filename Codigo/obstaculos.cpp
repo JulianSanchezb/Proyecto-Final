@@ -1,5 +1,6 @@
 #include "obstaculos.h"
 #include "jugador.h"
+#include "jefe.h"
 
 using namespace std;
 //verificar todas las medidas de la pantalla
@@ -16,6 +17,7 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
     ancho = anchoi;
     alto = altoi;
     Goku = Gokui;
+    Guiran = nullptr;
     disponible = false;
     limiteinferior = 100;
     limitesuperior = -100;
@@ -81,6 +83,15 @@ obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo,
         setPixmap(frames[0]);
 
         connect(timer, &QTimer::timeout, this, &obstaculos::moveRecto);
+        break;
+    case 5:
+        frames.append(QPixmap(":/Multimedia/esfera4.png").scaled(15, 15));
+
+        frameCount = frames.size();
+        frameIndex = 0;
+
+        setPixmap(frames[0]);
+        connect(timer, &QTimer::timeout, this, &obstaculos::moveEsfera);
         break;
     }
     setPixmap(img);
@@ -239,10 +250,36 @@ bool obstaculos::colision(){
     }
 }
 
+void obstaculos::moveEsfera() {
+    if (!disponible) return;
+
+    int velocidad = 15 * direccion;
+    if(direccion == 0){
+        velocidad = 15;
+    }
+
+    setPos(x() + velocidad, y());
+
+    frameIndex = (frameIndex + 1) % frameCount;
+    setPixmap(frames[frameIndex]);
+
+    if (x() > 460 || x() < 1 ||collidesWithItem(Guiran)){
+        if(collidesWithItem(Guiran)){
+            short int salud = Guiran->getSalud() - 30;
+            Guiran->setSalud(salud);
+        }
+        desactivar();
+    }
+}
+
 bool obstaculos::getdisponible(){
     return disponible;
 }
 
 bool obstaculos::setDisponible(bool tipo){
     return (disponible = tipo);
+}
+
+void obstaculos::setGuiran(jefe* g){
+    Guiran = g;
 }
