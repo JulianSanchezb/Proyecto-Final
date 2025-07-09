@@ -63,8 +63,6 @@ recolectables::~recolectables() {
     if (timercol) {
         timercol->stop();
     }
-
-
 }
 
 void recolectables::posicion(int x){
@@ -96,10 +94,6 @@ bool recolectables::colision(){
         return false;
     }
 }
-
-//QRectF recolectables::boundingRect() const {
-//    return QRectF(0, 0, ancho, alto);
-//}
 
 unsigned short int recolectables::getAporte(){
     return aporte;

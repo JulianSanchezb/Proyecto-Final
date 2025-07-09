@@ -132,7 +132,7 @@ void obstaculos::moveSenoidal() {
     int velX = 5;
     float y = amplitud * sin(t * frecuencia) + y0;
     t+=0.1;
-    setPos(x() + velX, y); // Qt: actualiza posición del objeto en escena
+    setPos(x() + velX, y);
     frameIndex = (frameIndex + 1) % frameCount;
     setPixmap(frames[frameIndex]);
 
@@ -204,7 +204,6 @@ void obstaculos::animarDisparo() {
 void obstaculos::activar(QPointF posicion,int tiempo) {
     setPos(posicion);
 
-    //qDebug()<<posicion;
     x0 = posicion.x();
     y0 = posicion.y();
     t = 0;
@@ -239,10 +238,6 @@ bool obstaculos::colision(){
         return false;
     }
 }
-
-//QRectF obstaculos::boundingRect() const {
-//    return QRectF(0, 0, ancho, alto);
-//}
 
 bool obstaculos::getdisponible(){
     return disponible;

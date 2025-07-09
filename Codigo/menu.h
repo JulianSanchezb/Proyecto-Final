@@ -15,6 +15,8 @@ private:
     QGraphicsScene* scene;
     QPushButton* boton;
     QGraphicsProxyWidget* proxy1;
+    QPushButton* exit;
+    QGraphicsProxyWidget* proxy2;
     QVector<QPixmap> spritesRoshi;
     QGraphicsPixmapItem* roshi;   // El objeto gráfico que se ve en la escena
     QTimer* timer;

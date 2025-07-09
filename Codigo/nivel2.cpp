@@ -17,16 +17,16 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
 
 
     QPixmap salud(":/Multimedia/salud.png");
-    QPixmap saludEscalada = salud.scaled(88,63);  // Aquí sí se guarda la imagen escalada
+    QPixmap saludEscalada = salud.scaled(95,62);
     QGraphicsPixmapItem* vida = scene->addPixmap(saludEscalada);
-    vida->setPos(430,-8); // Posición exacta en la escena
+    vida->setPos(423,-10);
     vida->setZValue(10);
 
     QPixmap imgEsfera(":/Multimedia/esfera1.png");
     QGraphicsPixmapItem* esfera = scene->addPixmap(imgEsfera);
     esfera->setPos(390, 3);
-    esfera->setScale(0.5);  // si es muy grande
-    esfera->setZValue(20);   // encima del fondo pero debajo de personajes si quieres
+    esfera->setScale(0.5);
+    esfera->setZValue(20);
 
     // Leche decorativa
     QPixmap imgLeche(":/Multimedia/leche.png");
@@ -34,6 +34,42 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     leche->setPos(360, 3);
     leche->setScale(0.5);
     leche->setZValue(20);
+
+    t1 = new QGraphicsTextItem;
+    scene->addItem(t1);
+    t1->setPos(377, 5);
+    t1->setScale(0.9);
+    t1->setPlainText(QString::number(Goku->getSaludables()));
+
+    t2 = new QGraphicsTextItem;
+    scene->addItem(t2);
+    t2->setPos(413, 5);
+    t2->setScale(0.9);
+    t2->setPlainText(QString::number(Goku->getEnergia()));
+
+    barraSalud = new QProgressBar();
+    barraSalud->setRange(0, 500);
+    barraSalud->setTextVisible(0);
+
+    barraSalud->setStyleSheet(
+        "QProgressBar {"
+        "  border: 2px solid transparent;"
+        "  border-radius: 1px;"
+        "  text-align: center;"
+        "  background-color: transparent;"
+        "}"
+        "QProgressBar::chunk {"
+        "  background-color: red;"
+        "  width: 2px;"
+        "}"
+        );
+
+    barraSalud->setValue(Goku->getSalud());
+    barraSalud->setFixedSize(63,11);
+
+    proxyWidget = scene->addWidget(barraSalud);
+    proxyWidget->setZValue(11);
+    proxyWidget->setPos(445,18);
 
     scene->addItem(Goku);
     Goku->setPos(370,200);
@@ -53,11 +89,49 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
         if(Goku->especial && Goku->getEnergia() > 0){
              mostrar_obstaculo(esferas,1,50,20,Goku->getdireccion(),0);
         }
+        barraSalud->setValue(Goku->getSalud());
     });
     timerP->start(500);
+}
 
+nivel2::~nivel2() {
+    if (timerP) {
+        timerP->stop();
+        delete timerP;
+        timerP = nullptr;
+    }
 
+    if (barraSalud) {
+        delete barraSalud;
+        barraSalud = nullptr;
+    }
 
+    if (proxyWidget) {
+        delete proxyWidget;
+        proxyWidget = nullptr;
+    }
+
+    if (t1) {
+        delete t1;
+        t1 = nullptr;
+    }
+
+    if (t2) {
+        delete t2;
+        t2 = nullptr;
+    }
+
+    if (Giran) {
+        scene->removeItem(Giran);
+        delete Giran;
+        Giran = nullptr;
+    }
+
+    if (scene) {
+        scene->clear();
+        delete scene;
+        scene = nullptr;
+    }
 }
 
 void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad,
@@ -90,7 +164,6 @@ void nivel2::creacion(QVector<obstaculos*>& contenedor, int cantidad, unsigned s
     }
 }
 
-
 //getter
 QGraphicsScene* nivel2::obtenerEscena(){
     return scene;
@@ -104,6 +177,14 @@ jugador* nivel2::getGoku(){
 //setter
 void nivel2::setGoku(jugador* goku){
     Goku = goku;
+}
+
+void nivel2::setT1(){
+    t1->setPlainText(QString::number(Goku->getSaludables()));
+}
+
+void nivel2::setT2(){
+    t2->setPlainText(QString::number(Goku->getEnergia()));
 }
 
 

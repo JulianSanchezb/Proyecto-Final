@@ -308,8 +308,6 @@ void jefe::updateSprite() {
     frameIndex = (frameIndex + 1) % currentFrames->size();
 }
 
-
-
 bool jefe::colision(){
     if(collidesWithItem(Goku)){
         if(Goku->getSalud() > 0){

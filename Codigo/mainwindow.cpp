@@ -41,9 +41,8 @@ MainWindow::MainWindow(QWidget *parent)
         }
 
         tiponivel = 1;
-
-        ui->progressBar->setVisible(true);
-        timerN->start(1000);
+      
+        timerN->start(61000);
         timerS->start(200);
         cambiarEscena(tiponivel);
     });
@@ -59,7 +58,6 @@ MainWindow::MainWindow(QWidget *parent)
             ptrG->resetAnimtimer();
             replay = false;
         }
-        ui->progressBar->setValue(ptrG->getSalud());
 
         if(ptrG->getSalud() <= 0 || limitetiempo){
             timerN->stop();
@@ -88,7 +86,6 @@ MainWindow::MainWindow(QWidget *parent)
                     delete Nivel1;
                     Nivel1 = nullptr;
                 }
-
                 cambiarEscena(tiponivel);
             });
         }
@@ -105,6 +102,7 @@ void MainWindow::cambiarEscena(short Escena){
     case 1:
         ptrG->setnivel(1);
         if(Nivel1){
+        Menu->setTimer(0);
         escena = Nivel1->obtenerEscena();
         ui->graphicsView->setScene(escena);
         }
@@ -121,12 +119,11 @@ void MainWindow::cambiarEscena(short Escena){
         break;
     case 0:
         if (Menu) {
+            Menu->setTimer(1);
             escena = Menu->obtenerEscena();
             ui->graphicsView->setScene(escena);
 
             ui->graphicsView->fitInView(escena->sceneRect(), Qt::KeepAspectRatio);
-
-            ui->progressBar->setVisible(false);
         }
         break;
     }
@@ -139,7 +136,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
         switch (event->key()) {
         case Qt::Key_W:
             if(ptrG->y()>=0){
-                ptrG->moveUp2();
+                ptrG->moveUp1();
             }
             break;
         case Qt::Key_S:
@@ -149,12 +146,12 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
             break;
         case Qt::Key_A:
             if(ptrG->x()>=0){
-                ptrG->moveLeftp();
+                ptrG->moveLeft1();
             }
             break;
         case Qt::Key_D:
             if(ptrG->x()<=220){
-                ptrG->moveRightp();
+                ptrG->moveRight1();
             }
             break;
         }
@@ -170,6 +167,29 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
                 ptrG->moveUp();
             }
             break;
+
+       /* case Qt::Key_A:
+            if(x() >= 3){
+                ptrG->keysPressed.insert(Qt::Key_A);
+                ptrG->moveLeft();
+            }
+            break;
+        case Qt::Key_D:
+            if(x() <= 420){
+                ptrG->keysPressed.insert(Qt::Key_D);
+                ptrG->moveRight();
+            }
+            break;
+        case Qt::Key_R:
+            if(ptrG->getSaludables() > 0){
+                //ptrG->setSaludables(ptrG->getSaludables() - 1);
+                ptrG->consumir(1);
+                Nivel2->setT1();
+                //ptrG->setSalud(ptrG->getSalud() + 20);
+            }
+            break;
+        }
+        */
         }
     }
 }

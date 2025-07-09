@@ -16,6 +16,7 @@ private:
     unsigned short int alto;
     bool onGround;
 public:
+    personaje();
     QPixmap img;
     QTimer* timer;
     QVector<QPixmap> frames;
@@ -28,12 +29,6 @@ public:
     float posy;
     float velx;
     float vely;
-    personaje();
-    void moveUp();
-    void moveRightp();
-    void moveLeftp();
-    //QRectF boundingRect() const override;
-    void setPosy(int y);
 
     //Getters
     short int getSalud();

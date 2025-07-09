@@ -26,7 +26,10 @@ public:
     QTimer* animTimer = nullptr;
     QTimer* movTimer = nullptr;
     QSet<int> keysPressed;
-    void moveUp2();
+
+    void moveUp1();
+    void moveRight1();
+    void moveLeft1();
     void moveDown();
     void moveUp();
     void moveRight();
@@ -44,6 +47,11 @@ public:
     bool especial = false;
 
     int getdireccion();
+
+    //Getters
+    short int getSaludables();
+    short int getEnergia();
+
     //Setters
     void setEnergia(short int e);
     void setSaludables(short int s);
