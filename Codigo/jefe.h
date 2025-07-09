@@ -18,10 +18,9 @@ private:
     bool banderapos = true;
     bool muerto = false;
     unsigned short int contador = 0;
-    void moveUp();
-    void moveRight();
-    void moveLeft();
-    //QPointF pos;
+    void moveUp()override;
+    void moveRight()override;
+    void moveLeft()override;
 public:
     jefe(unsigned short salu, int gravedad, int tiempo, unsigned short ancho, unsigned short alto,
          int posix, int posiy, int velox, int veloy, jugador *goku);

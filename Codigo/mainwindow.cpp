@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         tiponivel = 1;
       
-        timerN->start(61000);
+        timerN->start(1000);
         timerS->start(200);
         cambiarEscena(tiponivel);
     });
@@ -167,29 +167,6 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
                 ptrG->moveUp();
             }
             break;
-
-       /* case Qt::Key_A:
-            if(x() >= 3){
-                ptrG->keysPressed.insert(Qt::Key_A);
-                ptrG->moveLeft();
-            }
-            break;
-        case Qt::Key_D:
-            if(x() <= 420){
-                ptrG->keysPressed.insert(Qt::Key_D);
-                ptrG->moveRight();
-            }
-            break;
-        case Qt::Key_R:
-            if(ptrG->getSaludables() > 0){
-                //ptrG->setSaludables(ptrG->getSaludables() - 1);
-                ptrG->consumir(1);
-                Nivel2->setT1();
-                //ptrG->setSalud(ptrG->getSalud() + 20);
-            }
-            break;
-        }
-        */
         }
     }
 }

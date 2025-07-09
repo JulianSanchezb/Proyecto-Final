@@ -22,9 +22,6 @@ jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short in
     frameCount = 0;
     frameIndex = 0;
     banderapos = true;
-    qDebug() << nivel;
-
-
 }
 
 void jugador::moveUp1(){
@@ -41,7 +38,6 @@ void jugador::moveLeft1(){
     posx -= velx;
     setPos(posx, posy);
 }
-
 
 void jugador::moveDown() {
     posy += vely;
@@ -413,15 +409,6 @@ int jugador::getdireccion(){
     return direccionMovimiento;
 }
 
-void jugador::setEnergia(short int e) {
-    energia = e;
-}
-void jugador::setSaludables(short int s) {
-    saludables = s;
-}
-void jugador::setEstado(short int e) {
-    estado = e;
-}
 
 
 

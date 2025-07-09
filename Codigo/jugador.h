@@ -31,9 +31,9 @@ public:
     void moveRight1();
     void moveLeft1();
     void moveDown();
-    void moveUp();
-    void moveRight();
-    void moveLeft();
+    void moveUp()override;
+    void moveRight()override;
+    void moveLeft()override;
     void ataqueEpecial();
     void ataqueBasico();
     void consumir(unsigned short tipo);

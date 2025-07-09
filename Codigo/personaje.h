@@ -29,6 +29,9 @@ public:
     float posy;
     float velx;
     float vely;
+    virtual void moveUp();
+    virtual void moveRight();
+    virtual void moveLeft();
 
     //Getters
     short int getSalud();
