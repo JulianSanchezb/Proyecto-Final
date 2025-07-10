@@ -42,15 +42,12 @@ public:
     void recibirDano();
     void detenerMovimiento();
     void actualizarMovimiento();
-    bool derecha= false;
-    bool izquierda = false;
     bool especial = false;
-
-    int getdireccion();
 
     //Getters
     short int getSaludables();
     short int getEnergia();
+    int getdireccion();
 
     //Setters
     void setEnergia(short int e);

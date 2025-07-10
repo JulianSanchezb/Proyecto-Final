@@ -5,9 +5,9 @@
 #include <QProgressBar>
 #include <QGraphicsProxyWidget>
 
-class obstaculos;
 class jugador;
 class jefe;
+class obstaculos;
 class recolectables;
 
 class nivel1 : public QObject

@@ -57,17 +57,15 @@ jefe::jefe(unsigned short int salu, int gravedad, int tiempo, unsigned short int
                 } else {
                     muerteTimer->stop();
                     muerteTimer->deleteLater();
-                    deleteLater();
                 }
             });
-
             muerteTimer->start(300);
-            return; //evita que el animTimer siga ejecutando lógica normal
+            return;
         }
 
 
         if(getGround()){
-            if(x() >= 390 && x() <= 430){
+            if(x() >= 390 && x() <= 450){
                 ataqueBasico(0);
                 banderapos = false;
             }else if(x() >= 1 && x() <= 4){
@@ -163,15 +161,14 @@ void jefe::ataqueBasico(bool posicion) {
                 if(Goku->getSalud() > 0){
                     Goku->setEstado(1);
                     frameIndex = 0;
-                    //Goku->actualizarSprite();
                 }
             }
             if (!animTimer->isActive()) {
-                animTimer->start();  // o solo start() si ya configuraste el intervalo
+                animTimer->start();
             }
         }
     });
-    ataqueTimer->start(200);  // 200 ms por frame
+    ataqueTimer->start(200);
 }
 
 
@@ -208,22 +205,17 @@ void jefe::explosion() {
                 Goku->setSalud(saludgoku);
                 Goku->setEstado(1);
                 frameIndex = 0;
-                //Goku->actualizarSprite();
             }
-
         } else {
-
             explosionTimer->stop();
             explosionTimer->deleteLater();
 
             if (!animTimer->isActive()) {
-                animTimer->start();  // o solo start() si ya configuraste el intervalo
+                animTimer->start();
             }
         }
-
     });
-    explosionTimer->start(200);  // 200 ms por frame
-
+    explosionTimer->start(200);
 }
 
 void jefe::moveUp() {
@@ -282,9 +274,9 @@ void jefe::moveUp() {
             vely = 0;
             setGround(true);
             setPos(posx, posy);
-            explosion();  // o lo que se quiera que ocurra al aterrizar
+            explosion();
             if (!animTimer->isActive()) {
-                animTimer->start();  // o solo start() si ya configuraste el intervalo
+                animTimer->start();
             }
             saltoTimer->stop();
             saltoTimer->deleteLater();
@@ -292,11 +284,10 @@ void jefe::moveUp() {
         } else {
             setGround(false);
         }
-
         setPos(posx, posy);
     });
 
-    saltoTimer->start(50);  // más frecuente para suavizar
+    saltoTimer->start(50);
 }
 
 

@@ -1,6 +1,5 @@
 #include "jugador.h"
 #include "jefe.h"
-#include "obstaculos.h"
 
 jugador::jugador(short int salu, float gravedad, float tiempo, unsigned short int anchoi,unsigned short int altoi, float posix, float posiy, float velox, float veloy) {
     setSalud(salu);
@@ -46,10 +45,10 @@ void jugador::moveDown() {
 
 void jugador::moveUp() {
     int direccion;
-    if (movTimer) {
+    if (movTimer && movTimer->isActive()) {
         movTimer->stop();
     }
-    if (animTimer) {
+    if (animTimer && animTimer->isActive()) {
         animTimer->stop();
     }
     if(banderapos){
@@ -101,8 +100,12 @@ void jugador::moveUp() {
             posy = 190;
             vely = 0;
             setGround(true);
-            animTimer->start();
-            movTimer->start();
+            if(animTimer && !animTimer->isActive()){
+                animTimer->start();
+            }
+            if(movTimer && !movTimer->isActive()){
+                movTimer->start();
+            }
             setPos(posx, posy);
             estado = 0;
             saltoTimer->stop();
@@ -127,8 +130,11 @@ void jugador::moveRight() {
     if (movTimer) {
         movTimer->stop();
         movTimer->deleteLater();
+        movTimer = nullptr;
     }
-    movTimer = new QTimer(this);
+    if(!movTimer){
+        movTimer = new QTimer(this);
+    }
     moveFrames.clear();
     moveFrames.append(QPixmap(":/Multimedia/goku2.01.png").scaled(90, 90));
     moveFrames.append(QPixmap(":/Multimedia/goku2.02.png").scaled(90, 90));
@@ -167,8 +173,11 @@ void jugador::moveLeft() {
     if (movTimer) {
         movTimer->stop();
         movTimer->deleteLater();
+        movTimer = nullptr;
     }
-    movTimer = new QTimer(this);
+    if(!movTimer){
+        movTimer = new QTimer(this);
+    }
 
     moveFrames.clear();
     moveFrames.append(QPixmap(":/Multimedia/goku2.11.png").scaled(90, 90));
@@ -207,7 +216,7 @@ void jugador::ataqueEspecial() {
 }
 
 void jugador::ataqueBasico() {
-    if (atacando) return;  // Evita múltiples ataques simultáneos
+    if (atacando) return;
     atacando = true;
 
     if (animTimer) animTimer->stop();
@@ -237,7 +246,7 @@ void jugador::ataqueBasico() {
             setPixmap(moveFrames[frameCount]);
             frameCount++;
 
-            // Colisión con enemigo durante el ataque
+            // Colisión con Giran durante el ataque
             if (colision(1)) {
                 short int saludGuilan = guilan->getSalud() - 10;
                 guilan->setSalud(saludGuilan);
@@ -278,8 +287,6 @@ bool jugador::colision(int caso) {
 }
 
 void jugador::actualizarSprite() {
-    //if (direccionMovimiento != 0 || !getGround()) return;
-    //qDebug()<<estado;
     switch (estado) {
     case 0:
         setPixmap(idleFrames[frameIndex % idleFrames.size()]);
@@ -298,7 +305,7 @@ void jugador::actualizarSprite() {
             animTimer->stop();
         }
         break;
-    case 3: // MOVIMIENTO
+    case 3:
         if (!moveFrames.isEmpty())
             setPixmap(moveFrames[frameIndex % moveFrames.size()]);
         break;
@@ -384,7 +391,7 @@ void jugador::actualizarMovimiento() {
          moveRight();
         }
     }else if(keysPressed.contains(Qt::Key_E)&& !keysPressed.contains(Qt::Key_D) && !keysPressed.contains(Qt::Key_A)){
-        if( getSalud() > 0){
+        if( getSalud() > 0 && getGround()){
          ataqueBasico();
         }
     } else {

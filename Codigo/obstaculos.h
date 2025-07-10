@@ -2,12 +2,11 @@
 #define OBSTACULOS_H
 #include <QObject>
 #include <QGraphicsItem>
-#include <QColor>
-#include <QPainter>
 #include <QObject>
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QtMath>
+
 class jugador;
 class jefe;
 
@@ -23,7 +22,7 @@ private:
     float g;
     float t ;
     int limiteinferior;
-    int limitesuperior;// mirar si definir los limites de la escena en el nivel de manera publica para poder acceder a ellos
+    int limitesuperior;
     int limiteizquierda;
     int limitederecha;
     int ancho, alto;

@@ -3,7 +3,7 @@
 #include "jefe.h"
 
 using namespace std;
-//verificar todas las medidas de la pantalla
+
 obstaculos::obstaculos(float x, float y, float velox, float veloy, float tiempo, float gravedad, int anchoi,
                        int altoi, jugador* Gokui, unsigned short int tipo)
     : QGraphicsPixmapItem(nullptr)
@@ -120,7 +120,6 @@ void obstaculos::moveeny(){
         setPixmap(frames[frameIndex]);
     }
 
-    // Si está disparando, volver a idle después de terminar la animación
     if (disparando && frameIndex == frameCount - 1) {
         disparando = false;
         frames = idleFrames;
@@ -221,22 +220,16 @@ void obstaculos::activar(QPointF posicion,int tiempo) {
     disponible = true;
     setVisible(true);
 
-
-    if(!timer){
+    if(!timer->isActive()){
         timer->start(tiempo);
     }
-
-
-
 }
 
 void obstaculos::desactivar() {
     disponible = false;
     setVisible(false);
 
-
-
-    if (timer) {
+    if (timer->isActive()) {
         timer->stop();
     }
 

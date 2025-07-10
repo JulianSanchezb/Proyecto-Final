@@ -23,7 +23,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void cambiarEscena(short int Escena);
-
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* escena;

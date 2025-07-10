@@ -17,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     replay(true)
 {
     ui->setupUi(this);
-    this->setFocusPolicy(Qt::StrongFocus);  // El MainWindow escucha teclas
-    ui->graphicsView->setFocusPolicy(Qt::NoFocus);  // Elimina interferencia
 
     movimientoTimer = new QTimer(this);
     connect(movimientoTimer, &QTimer::timeout, this, [=]() {
@@ -43,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         tiponivel = 1;
       
-        timerN->start(15000);
+        timerN->start(184000);
         if(!timerS->isActive()){
             timerS->start(200);
         }
@@ -90,13 +88,10 @@ MainWindow::MainWindow(QWidget *parent)
                             ptrG->setSaludables(0);
                             ptrG->setEnergia(0);
                             tiponivel = 0;
-                            qDebug()<<"antes de eliminar";
                             if(Nivel2){
                                 delete Nivel2;
                                 Nivel2 = nullptr;
-                                 qDebug()<<"eliminando";
                             }
-                             qDebug()<<"despues de eliminar";
                             cambiarEscena(tiponivel);
                         });
                     }
@@ -108,7 +103,6 @@ MainWindow::MainWindow(QWidget *parent)
                     replay = true;
                     tiponivel = 0;
                 }
-
                 cambiarEscena(tiponivel);
             });
         }
@@ -191,7 +185,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
                 }
                 break;
             case Qt::Key_R:
-                if (ptrG->getSaludables() > 0) {
+                if (ptrG->getSaludables() > 0 && ptrG->getGround()) {
                     ptrG->consumir(1);
                     Nivel2->setT1();
                 }

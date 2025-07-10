@@ -2,9 +2,6 @@
 #define PERSONAJE_H
 #include <QObject>
 #include <QGraphicsItem>
-#include <QColor>
-#include <QPainter>
-
 
 class personaje : public QObject, public QGraphicsPixmapItem
 {
@@ -17,7 +14,6 @@ private:
     bool onGround;
 public:
     personaje();
-    QPixmap img;
     QTimer* timer;
     QVector<QPixmap> frames;
     int frameIndex;

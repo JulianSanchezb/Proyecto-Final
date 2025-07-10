@@ -1,5 +1,6 @@
 #include "recolectables.h"
 #include "jugador.h"
+
 recolectables::recolectables(int x, int y, unsigned short cantidad, unsigned short type,
                              int w, int h, jugador* Goku)
 : QGraphicsPixmapItem(nullptr)

@@ -1,6 +1,7 @@
 #include "nivel1.h"
 #include "obstaculos.h"
 #include "jugador.h"
+#include "jefe.h"
 #include "recolectables.h"
 
 nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
@@ -17,12 +18,12 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     esfera = new recolectables(50, 50, 1, 1, 10, 10, Goku);
     scene->addItem(esfera);
     esfera->setZValue(20);
-    esfera->setParentItem(nullptr);  // Si quieres que sea independiente
+    esfera->setParentItem(nullptr);
     esfera->setVisible(false);
     esfera->setScale(0.3);
 
     leche = new recolectables(100, 20, 1, 2, 10, 10, Goku);
-    leche->setParentItem(nullptr);  // Si quieres que sea independiente
+    leche->setParentItem(nullptr);
     scene->addItem(leche);
     leche->setZValue(20);
     leche->setVisible(false);
@@ -66,9 +67,9 @@ nivel1::nivel1(jugador *goku): scene(new QGraphicsScene()),
     scene->setSceneRect(img.rect());
 
     QPixmap salud(":/Multimedia/salud.png");
-    QPixmap saludEscalada = salud.scaled(45,30);  // Aquí sí se guarda la imagen escalada
+    QPixmap saludEscalada = salud.scaled(45,30);
     QGraphicsPixmapItem* vida = scene->addPixmap(saludEscalada);
-    vida->setPos(210,-5); // Posición exacta en la escena
+    vida->setPos(210,-5);
     vida->setZValue(10);
 
     crearNube(":/Multimedia/nubes.png",QPointF(1,1),1);
@@ -174,7 +175,7 @@ nivel1::~nivel1() {
     }
 
     if (scene) {
-        scene->clear();  // Elimina los items de la escena
+        scene->clear();
         delete scene;
         scene = nullptr;
     }
@@ -184,8 +185,8 @@ void nivel1::mostrar_obstaculo(QVector<obstaculos*> contenedor, int cantidad, in
     QPointF posicion = QPointF(x,y);
     for (int i = 0; i < cantidad; ++i) {
         if (!contenedor[i]->getdisponible()){
-            QPointF origen = camara->pos() + posicion;  // punto desde donde sale la bala, modificar 200 y 50
-            contenedor[i]->activar(origen,200);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
+            QPointF origen = camara->pos() + posicion;
+            contenedor[i]->activar(origen,200);
             break;
         }
     }

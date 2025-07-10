@@ -2,14 +2,11 @@
 
 personaje::personaje() {}
 
-void personaje::moveUp() {  //Verificar el movimiento horizontal cuando está en el aire
-    // Control horizontal
+void personaje::moveUp() {
     velx = 0;
 
-    // Aplicar gravedad
     vely += g;
 
-    // Actualizar posición
     posx += velx;
     posy += vely;
 
@@ -21,8 +18,6 @@ void personaje::moveUp() {  //Verificar el movimiento horizontal cuando está en
     } else {
         onGround = false;
     }
-
-    // Actualizar posición visual
     this->setPos(posx, posy);
 }
 

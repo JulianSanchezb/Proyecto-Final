@@ -1,7 +1,7 @@
 #include "nivel2.h"
-#include "jefe.h"
-#include "jugador.h"
 #include "obstaculos.h"
+#include "jugador.h"
+#include "jefe.h"
 
 nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
     Goku(goku),
@@ -160,7 +160,6 @@ nivel2::~nivel2() {
         t2 = nullptr;
     }
     if (Giran) {
-        scene->removeItem(Giran);
         delete Giran;
         Giran = nullptr;
     }
@@ -187,8 +186,8 @@ void nivel2::mostrar_obstaculo(QVector<obstaculos *>& contenedor, int cantidad,
     }
     for (int i = 0; i < cantidad; ++i) {
         if (!contenedor[i]->getdisponible()){
-            QPointF origen = inicio  + posicion;  // punto desde donde sale la bala, modificar 200 y 50
-            contenedor[i]->activar(origen,100);// para QpointF puede pasarse como parametro para que funicone para pajaros tambien
+            QPointF origen = inicio  + posicion;
+            contenedor[i]->activar(origen,100);
             contenedor[i]->direccion = direccion;
             break;
         }
