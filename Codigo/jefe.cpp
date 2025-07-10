@@ -121,6 +121,8 @@ jefe::jefe(unsigned short int salu, int gravedad, int tiempo, unsigned short int
     animTimer->start(300);
 }
 
+
+
 void jefe::ataqueBasico(bool posicion) {
     if (animTimer->isActive()) {
         animTimer->stop();
@@ -269,9 +271,9 @@ void jefe::moveUp() {
         // Movimiento horizontal
         posx += (direccion)*5;
         if(x() >= 450){
-            posx = 450;
+            posx = 440;
         }else if(x() <= 1){
-            posx = 1;
+            posx = 3;
         }
 
         // Colisión con el suelo

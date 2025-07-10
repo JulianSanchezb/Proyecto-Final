@@ -168,6 +168,10 @@ nivel1::~nivel1() {
         delete t2;
         t2 = nullptr;
     }
+    if(Goku->scene()){
+        scene->removeItem(Goku);
+
+    }
 
     if (scene) {
         scene->clear();  // Elimina los items de la escena

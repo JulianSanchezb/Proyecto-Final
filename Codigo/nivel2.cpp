@@ -111,10 +111,12 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
 
 
     connect(timerP, &QTimer::timeout, this, [=]() {
-        if(Giran->x() >= 390 && Giran->x() <= 430){
-            mostrar_obstaculo(proyectiles, 3, 50, 20,-1,1);
-        }else if(Giran->x()<=10 && Giran->x() >= 1){
-            mostrar_obstaculo(proyectiles, 3, 50, 20,1,1);
+        if(Giran){
+            if(Giran->x() >= 390 && Giran->x() <= 430){
+                mostrar_obstaculo(proyectiles, 3, 50, 20,-1,1);
+            }else if(Giran->x()<=10 && Giran->x() >= 1){
+                mostrar_obstaculo(proyectiles, 3, 50, 20,1,1);
+            }
         }
         if(Goku->especial && Goku->getEnergia() > 0 && variable == true){
             variable = false;
@@ -124,7 +126,9 @@ nivel2::nivel2(jugador *goku): scene(new QGraphicsScene()),
             });
         }
         barraSalud->setValue(Goku->getSalud());
-        barraGiran->setValue(Giran->getSalud());
+        if(Giran){
+          barraGiran->setValue(Giran->getSalud());
+        }
     });
     timerP->start(200);
 }
@@ -159,6 +163,9 @@ nivel2::~nivel2() {
         scene->removeItem(Giran);
         delete Giran;
         Giran = nullptr;
+    }
+    if(Goku->scene()){
+        scene->removeItem(Goku);
     }
     if (scene) {
         scene->clear();

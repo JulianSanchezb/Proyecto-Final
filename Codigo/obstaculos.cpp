@@ -221,10 +221,12 @@ void obstaculos::activar(QPointF posicion,int tiempo) {
     disponible = true;
     setVisible(true);
 
-    //if (timer) qDebug()<<"si activa";
-    timer->start(tiempo);
 
-    //if (timer) ;timer->start(tiempo); Esto estaba, no sé si sirva para algo
+    if(!timer){
+        timer->start(tiempo);
+    }
+
+
 
 }
 
@@ -232,9 +234,11 @@ void obstaculos::desactivar() {
     disponible = false;
     setVisible(false);
 
-    //if (timer) qDebug()<<"si";timer->stop();
 
-    //if (timer) ;timer->stop();
+
+    if (timer) {
+        timer->stop();
+    }
 
 }
 
@@ -253,23 +257,25 @@ bool obstaculos::colision(){
 void obstaculos::moveEsfera() {
     if (!disponible) return;
 
-    int velocidad = 15 * direccion;
+    int velocidad = 20 * direccion;
     if(direccion == 0){
-        velocidad = 15;
+        velocidad = 20;
     }
 
     setPos(x() + velocidad, y());
 
     frameIndex = (frameIndex + 1) % frameCount;
     setPixmap(frames[frameIndex]);
-
-    if (x() > 460 || x() < 1 ||collidesWithItem(Guiran)){
-        if(collidesWithItem(Guiran)){
-            short int salud = Guiran->getSalud() - 30;
-            Guiran->setSalud(salud);
+    if(Guiran){
+        if (x() > 500 || x() < 1 ||collidesWithItem(Guiran)){
+            if(collidesWithItem(Guiran)){
+                short int salud = Guiran->getSalud() - 40;
+                Guiran->setSalud(salud);
+            }
+            desactivar();
         }
-        desactivar();
     }
+
 }
 
 bool obstaculos::getdisponible(){

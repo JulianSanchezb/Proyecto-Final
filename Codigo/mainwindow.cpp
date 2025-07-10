@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         tiponivel = 1;
       
-        timerN->start(184000);
+        timerN->start(15000);
         if(!timerS->isActive()){
             timerS->start(200);
         }
@@ -63,46 +63,52 @@ MainWindow::MainWindow(QWidget *parent)
         }
 
         if(ptrG->getSalud() <= 0 || limitetiempo){
+
             timerN->stop();
-            QTimer::singleShot(1500, this, [this]() {
+            QTimer::singleShot(3000, this, [this]() {
+
                 if(limitetiempo){
                     tiponivel = 2;
                     if(Nivel1){
                     ptrG->setEnergia(Nivel1->getesferas()->getcontcol());
                     ptrG->setSaludables(Nivel1->getleche()->getcontcol());
                     }
+                    if (Nivel1) {
+                        delete Nivel1;
+                        Nivel1 = nullptr;
+                    }
+
                     if (!Nivel2){
                         Nivel2 = new nivel2(ptrG);
                     }
+
                     if(Nivel2->getGiran()->getSalud() <= 0 || ptrG->getSalud() <= 0){
                         QTimer::singleShot(3000, this, [this](){
+
                             replay = true;
                             limitetiempo = false;
                             ptrG->setSaludables(0);
                             ptrG->setEnergia(0);
-                            if (ptrG->scene()){
-                                ptrG->scene()->removeItem(ptrG);
-                            }
                             tiponivel = 0;
+                            qDebug()<<"antes de eliminar";
                             if(Nivel2){
                                 delete Nivel2;
                                 Nivel2 = nullptr;
+                                 qDebug()<<"eliminando";
                             }
+                             qDebug()<<"despues de eliminar";
                             cambiarEscena(tiponivel);
                         });
                     }
                 }else if(ptrG->getSalud() <= 0){
+                    if (Nivel1) {
+                        delete Nivel1;
+                        Nivel1 = nullptr;
+                    }
                     replay = true;
                     tiponivel = 0;
-                    ptrG->setPos(215,50);
-                    if (ptrG->scene()){
-                        ptrG->scene()->removeItem(ptrG);
-                    }
                 }
-                if (Nivel1) {
-                    delete Nivel1;
-                    Nivel1 = nullptr;
-                }
+
                 cambiarEscena(tiponivel);
             });
         }

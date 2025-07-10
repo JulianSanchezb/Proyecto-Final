@@ -21,9 +21,11 @@ private:
     void moveUp()override;
     void moveRight()override;
     void moveLeft()override;
+
 public:
     jefe(unsigned short salu, int gravedad, int tiempo, unsigned short ancho, unsigned short alto,
          int posix, int posiy, int velox, int veloy, jugador *goku);
+
     void ataqueBasico(bool posicion);
     void explosion();
     bool colision();
